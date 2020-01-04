@@ -27,17 +27,17 @@ dwm_ups () {
     printf "%s" "$SEP1"
     if [ "$IDENTIFIER" = "unicode" ]; then
         if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
         elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         fi
     else
         if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
         elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         fi
@@ -67,7 +67,7 @@ dwm_network () {
 LOCATION='Chandigarh'
 while true; do
     curl -s "https://wttr.in/${LOCATION}?format=1" > $HOME/.cache/Weather.tmp
-    sleep 60
+    sleep 300
 done &
 
 while true; do
@@ -102,7 +102,7 @@ while true; do
 
     # STATUS
     #xsetroot -name "[🌐 $vel_recv $vel_trans (${CONNAME}) $PRIVATE : $PUBLIC][$(pulseaudio)][WEATHER $WEATHER][RAM ${MEMUSED}/${MEMTOT} HOME ${STOUSED}/${STOTOT} GPU-TEMP ${GPU_TEMP}°C CPU-TEMP ${CPU_TEMP}°C][$LOCALTIME]"
-    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(dwm_network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ HOME ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ ROOT ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#fabd2f^CPU ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ UPS $(dwm_ups) ^c#928374^|^d^ $LOCALTIME "
+    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(dwm_network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(dwm_ups) ^c#928374^|^d^ $LOCALTIME "
 
     rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
     tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)
@@ -117,4 +117,4 @@ while true; do
     txs=$(expr $txs / $interval)
     rxs=$(expr $rxs / 1024)
     txs=$(expr $txs / 1024)
-done
+done &
