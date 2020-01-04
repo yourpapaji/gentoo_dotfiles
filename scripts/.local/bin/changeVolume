@@ -1,0 +1,41 @@
+#!/usr/bin/env dash
+# vim: ft=sh
+
+## Pulseaudio volume controls
+## Requires the following script for it to work:
+## https://github.com/Fabian-G/dotfiles/blob/master/scripts/bin/getProgressString
+
+self=$(dirname "$0")
+
+# Message ID
+msgId="991049"
+
+# Change the volume or toggle mute
+case $1 in
+    inc)
+        pamixer -i 5 -u
+        ;;
+    dec)
+        pamixer -d 5 -u
+        ;;
+    mute)
+        pamixer -t
+        ;;
+    *)
+        echo ""
+esac
+
+volume="$(pamixer --get-volume)"
+mute="$(pamixer --get-mute)"
+
+if [ "$volume" = 0 ] || [ "$mute" = "true" ]; then
+    # mute
+    dunstify -a "changeVolume" -u low -i notification-audio-volume-muted -r "$msgId" "Volume muted"
+else
+    # volume notification
+    dunstify -a "changeVolume" -u low -i notification-audio-volume-high -r "$msgId" \
+        "Volume: ${volume}%" "$("$self"/getProgressString 10 "<b>◉ </b>" "○ " "$volume")"
+fi
+
+# Play sound
+canberra-gtk-play -i audio-volume-change -d "changeVolume"

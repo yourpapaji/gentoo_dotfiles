@@ -1,0 +1,3 @@
+#!/usr/bin/env dash
+# vim: ft=sh
+slock -m "Locked at  $(date "+%a %d, %H:%M:%S")"

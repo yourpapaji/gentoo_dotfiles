@@ -1,0 +1,9 @@
+#!/usr/bin/env dash
+# vim: ft=sh
+
+case "$(printf "reboot\\npoweroff\\nhibernate\\nsuspend" | dmenu -i -p "Choose:")" in
+	"reboot") doas reboot;;
+	"poweroff") doas shutdown -P now;;
+	"hibernate") doas pm-hibernate ;;
+	"suspend") doas pm-suspend ;;
+esac

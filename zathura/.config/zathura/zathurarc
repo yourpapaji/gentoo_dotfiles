@@ -1,0 +1,39 @@
+# Main settings
+set window-height           1000
+set window-width            800
+set window-title-basename   "true"
+
+# Setting recolor-keep true will keep any color your pdf has.
+# If it is false, it'll just be black and white.
+set recolor-keephue         "false"
+
+# Color settings
+include                     "themes/gruvbox-dark"
+
+# Rest of your configs go here:
+
+# Status bar
+set font                    "FuraCode Nerd Font 10"
+set statusbar-basename      "true"
+set statusbar-home-tilde    "true"
+
+set adjust-open             "width"
+set pages-per-row           "1"
+set smooth-scroll           "true"
+set selection-clipboard     "clipboard"
+set incremental-search      "true"
+set guioptions              ""
+
+set window-title-home-tilde "true"
+set window-title-basename   "true"
+set show-hidden             "true"
+
+# Navigate per page instead of default method
+unmap       [normal]        j
+unmap       [normal]        k
+map         [normal]        j   navigate next
+map         [normal]        k   navigate previous
+
+# Use r to toggle recolor (default: on)
+unmap       [normal]        r
+map         [normal]        r   recolor

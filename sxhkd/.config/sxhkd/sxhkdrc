@@ -1,0 +1,71 @@
+#!/usr/bin/env dash
+
+# Terminal
+super + Return
+	$TERMINAL -e tmux
+# Programs Menu
+super + p
+	j4-dmenu-desktop
+# WebBrowser
+super + w
+	$BROWSER
+# Exit Menu
+super + x
+	dmenu_exit
+# Clipboard Manager
+alt + c
+	clipmenu
+# Emoji Menu
+alt + u
+	emojimenu
+# NetworkManager
+alt + n
+	networkmanager_dmenu
+# Screen Lock
+super + shift + l
+	slock_cowsay
+# Process Monitors
+super + ctrl + {p,g}
+	$TERMINAL -g=120x40 -e {htop,gotop}
+# Music
+super + ctrl + m
+	$TERMINAL -g=90x38 -e ncmpcpp
+# IRC Chat
+super + ctrl + i
+	$TERMINAL -e weechat
+# File Manager
+super + ctrl + f
+	$TERMINAL -g=140x40 -e ranger
+# Take screenshot
+Print
+	screenshot
+
+# Other Keys
+XF86Audio{Next,Prev}
+	mpc {next,prev}
+XF86Audio{Pause,Play}
+	mpc toggle
+XF86Audio{Rewind,Forward}
+	mpc seek {-,+}10
+XF86AudioMedia
+	$TERMINAL -e ncmpcpp
+XF86PowerOff
+	doas poweroff
+XF86Calculator
+	$TERMINAL -e bc
+XF86Sleep
+	doas pm-suspend
+XF86WWW
+	$BROWSER
+XF86DOS
+	$TERMINAL
+XF86TaskPane
+	$TERMINAL -e htop
+XF86Mail
+	$TERMINAL -e neomutt
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+	changeVolume {inc,dec,mute}
+
+# Reload SXHKD
+super + Escape
+	pkill -USR1 -x sxhkd

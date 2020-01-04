@@ -1,0 +1,103 @@
+#!/usr/bin/env dash
+# vim: ft=sh
+
+get_bytes() {
+# Find active network interface
+interface=$(ip route get 8.8.8.8 2>/dev/null| awk '{print $5}')
+line=$(grep $interface /proc/net/dev | cut -d ':' -f 2 | awk '{print "received_bytes="$1, "transmitted_bytes="$9}')
+eval $line
+now=$(date +%s%N)
+}
+
+# Function which calculates the speed using actual and old byte number.
+# Speed is shown in KByte per second when greater or equal than 1 KByte per second.
+# This function should be called each second.
+
+get_velocity() {
+value=$1
+old_value=$2
+now=$3
+
+timediff=$(($now - $old_time))
+velKB=$(echo "1000000000*($value-$old_value)/1024/$timediff" | bc)
+if test "$velKB" -gt 1024
+then
+    echo $(echo "scale=2; $velKB/1024" | bc)MB/s
+else
+    echo ${velKB}KB/s
+fi
+}
+
+# Get initial values
+get_bytes
+old_received_bytes=$received_bytes
+old_transmitted_bytes=$transmitted_bytes
+old_time=$now
+
+pulseaudio() {
+VOL=$(pamixer --get-volume-human | tr -d '%')
+printf "%s" "$SEP1"
+    if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
+        printf "🔇"
+    elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+        printf "🔈 %s%%" "$VOL"
+    elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+        printf "🔉 %s%%" "$VOL"
+    else
+        printf "🔊 %s%%" "$VOL"
+    fi
+}
+
+while true; do
+    date +%a\ %d\ %b\ %H:%M > /tmp/CurTime.tmp
+    curl -s 'https://wttr.in/Chandigarh?format=1' > /tmp/Weather.tmp
+    sleep 15
+done &
+
+while true; do
+    # Time
+    LOCALTIME=$(cat /tmp/CurTime.tmp)
+
+    # CPU
+    CPU_T=$(cat /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input)
+    CPU_TEMP=$(expr "$CPU_T" / 1000)
+    CPU_F=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
+    CPU_FREQ=$(expr "$CPU_F" / 1000)
+
+    # GPU TEMP
+    #GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
+
+    # Weather
+    WEATHER=$(cat /tmp/Weather.tmp)
+
+    # Network Information
+    CONNAME=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -c 5-)
+    PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
+    PUBLIC=$(curl -s https://ipinfo.io/ip)
+
+    # Used and total memory
+    MEMUSED=$(free -h | awk '(NR == 2) {print $3}')
+    MEMTOT=$(free -h |awk '(NR == 2) {print $2}')
+
+    # Used and total storage in /home (rounded to 1024B)
+    STOUSED=$(df -h | grep '/$' | awk '{print $3}')
+    STOTOT=$(df -h | grep '/$' | awk '{print $2}')
+
+    # Get new transmitted, received byte number values and current time
+    get_bytes
+
+    # Calculates speeds
+    vel_recv=$(get_velocity $received_bytes $old_received_bytes $now)
+    vel_trans=$(get_velocity $transmitted_bytes $old_transmitted_bytes $now)
+
+    # STATUS
+    #xsetroot -name "[🌐 $vel_recv $vel_trans (${CONNAME}) $PRIVATE : $PUBLIC][$(pulseaudio)][WEATHER $WEATHER][RAM ${MEMUSED}/${MEMTOT} HOME ${STOUSED}/${STOTOT} GPU-TEMP ${GPU_TEMP}°C CPU-TEMP ${CPU_TEMP}°C][$LOCALTIME]"
+    xsetroot -name "[🌐 $vel_recv $vel_trans (${CONNAME}) $PRIVATE : $PUBLIC] [$(pulseaudio)] [$WEATHER] [RAM ${MEMUSED}/${MEMTOT}] [ROOT ${STOUSED}/${STOTOT}] [CPU ${CPU_FREQ}Mhz ${CPU_TEMP}°C] [$LOCALTIME]"
+
+    # Update old values to perform new calculations
+    old_received_bytes=$received_bytes
+    old_transmitted_bytes=$transmitted_bytes
+    old_time=$now
+
+    sleep 1
+done &

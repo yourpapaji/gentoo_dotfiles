@@ -1,0 +1,7 @@
+--ignore-errors
+--no-playlist
+--prefer-ffmpeg
+--merge-output-format mkv
+
+# Save in ~/Videos
+-o ~/Videos/'00 New Fav Stuff'/%(title)s.%(ext)s

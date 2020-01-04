@@ -1,0 +1,46 @@
+#!/bin/sh
+
+[ -d /bin ] && PATH="$PATH:/bin"
+[ -d /usr/bin ] && PATH="$PATH:/usr/bin"
+[ -d /sbin ] && PATH="$PATH:/sbin"
+[ -d /usr/sbin ] && PATH="$PATH:/usr/sbin"
+
+# stuff
+export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+export PAGER='less'
+export TERMINAL="st"
+export TERMCMD="st"
+export TERM="st"
+export BROWSER="firefox"
+export READER="zathura"
+export FILE="pcmanfm"
+export RXVT_SOCKET='/tmp/urxvt-socket'
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export VBOX_USB="usbfs"
+export LANG="en_US.UTF8"
+export LC_CTYPE="en_US.UTF-8"
+export SUDO_EDITOR="nvim -d"
+export EDITOR=/usr/bin/nvim
+export VISUAL=/usr/bin/nvim
+export GTK_USE_PORTAL=1
+export SXHKD_SHELL='/bin/dash'
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_CURRENT_DESKTOP='dwm'
+
+# gnome keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+export SSH_AUTH_SOCK
+
+# x settings
+setxkbmap -layout us -option caps:escape &
+xsetroot -cursor_name left_ptr &
+xautolock -time 10 -locker slock_time &
+xset m 2/1 4 &
+xset mouse 2/1 4 &
+xset r rate 350 80 &
+xset dpms 600 900 1200 &
+sxhkd &
+numlockx on &
+start-pulseaudio-x11 &

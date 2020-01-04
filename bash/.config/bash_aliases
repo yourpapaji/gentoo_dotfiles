@@ -1,0 +1,52 @@
+## Modified commands
+alias diff='colordiff'              # requires colordiff package
+alias grep='grep --color=auto'
+alias more='less'
+alias du='du -c -h'
+alias mkdir='mkdir -p -v'
+alias nano='nano -w'
+alias ping='ping -c 5'
+alias dmesg='dmesg -HL'
+
+# Privileged access
+if (( UID != 0 )); then
+    alias sudo='sudo '
+    alias scat='sudo cat'
+    alias svim='sudoedit'
+    alias root='sudo -i'
+    alias reboot='sudo systemctl reboot'
+    alias poweroff='sudo systemctl poweroff'
+    alias update='sudo pacman -Su'
+    alias netctl='sudo netctl'
+fi
+
+## ls
+#alias ls='ls -hF --color=auto'
+#alias lr='ls -R'                    # recursive ls
+#alias ll='ls -l'
+#alias la='ll -A'
+#alias lx='ll -BX'                   # sort by extension
+#alias lz='ll -rS'                   # sort by size
+#alias lt='ll -rt'                   # sort by date
+#alias lm='la | more'
+
+alias df='df -Th' # Human-readable sizes
+alias free='free -h'
+alias gitu='git add . && git commit && git push'
+alias up='sudo pacman -Syu && yay'
+alias pkgup='sudo pkgfile --update'
+alias q='exit'
+alias ur="sudo reflector --score 100 -l 16 -f 16 --protocol https --sort rate --verbose --save /etc/pacman.d/mirrorlist"
+alias matrix='unimatrix -a -f -s 97'
+alias apc='apcaccess status'
+alias ls='exa --color=always --group-directories-first' # my preferred listing
+alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+alias ll='exa -l --color=always --group-directories-first'  # long format
+alias lla='exa -al --color=always --group-directories-first'
+alias lt='exa -aT --color=always --group-directories-first' # tree listing
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+# -> Prevents accidentally clobbering files.
+alias ..='cd ..'
+alias shell-level='printf "$SHLVL\n"'

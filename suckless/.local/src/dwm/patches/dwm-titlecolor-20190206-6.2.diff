@@ -1,0 +1,47 @@
+From b15016b717c88eb378d87703dcf2169b6059047c Mon Sep 17 00:00:00 2001
+From: knary <theknary@gmail.com>
+Date: Wed, 6 Feb 2019 21:44:19 -0500
+Subject: [PATCH] Adds title bar color scheme, seperating it from SchemeSel.
+
+---
+ config.def.h | 1 +
+ dwm.c        | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..48e7ace 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -16,6 +16,7 @@ static const char *colors[][3]      = {
+ 	/*               fg         bg         border   */
+ 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+ 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
++	[SchemeTitle]  = { col_gray4, col_cyan,  col_cyan  },
+ };
+ 
+ /* tagging */
+diff --git a/dwm.c b/dwm.c
+index 4465af1..216e1f3 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -59,7 +59,7 @@
+ 
+ /* enums */
+ enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+-enum { SchemeNorm, SchemeSel }; /* color schemes */
++enum { SchemeNorm, SchemeSel, SchemeTitle }; /* color schemes */
+ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+@@ -730,7 +730,7 @@ drawbar(Monitor *m)
+ 
+ 	if ((w = m->ww - sw - x) > bh) {
+ 		if (m->sel) {
+-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
++			drw_setscheme(drw, scheme[m == selmon ? SchemeTitle : SchemeNorm]);
+ 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+ 			if (m->sel->isfloating)
+ 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+-- 
+2.20.1
+

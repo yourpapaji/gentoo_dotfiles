@@ -1,0 +1,118 @@
+#!/usr/bin/env dash
+# vim: ft=sh
+
+interval=1
+rxs=0
+txs=0
+
+pulseaudio() {
+VOL=$(pamixer --get-volume-human | tr -d '%')
+printf "%s" "$SEP1"
+    if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
+        printf "^c#cc241d^🔇^d^"
+    elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+        printf "^c#cc241d^🔈 %s%%^d^" "$VOL"
+    elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+        printf "^c#d79921^🔉 %s%%^d^" "$VOL"
+    else
+        printf "^c#b8bb26^🔊 %s%%^d^" "$VOL"
+    fi
+}
+
+dwm_ups () {
+    CHARGE=$(apcaccess -p BCHARGE -u)
+    STATUS=$(apcaccess -p STATUS -u)
+    TIMELEFT=$(apcaccess -p TIMELEFT -u)
+
+    printf "%s" "$SEP1"
+    if [ "$IDENTIFIER" = "unicode" ]; then
+        if [ "$STATUS" = "ONLINE " ]; then
+            printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+	elif [ "$STATUS" = "ONBATT " ]; then
+            printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+        else
+            printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+        fi
+    else
+        if [ "$STATUS" = "ONLINE " ]; then
+            printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+	elif [ "$STATUS" = "ONBATT " ]; then
+            printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+        else
+            printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
+        fi
+    fi
+    printf "%s\n" "$SEP2"
+}
+
+dwm_network () {
+    CONNAME=$(nmcli -a | grep 'Wired connection' | awk 'NR==1{print $1}')
+    if [ "$CONNAME" = "" ]; then
+        CONNAME=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -c 5-)
+    fi
+
+    PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
+    PUBLIC=$(curl -s https://ipinfo.io/ip)
+
+    printf "%s" "$SEP1"
+    if [ "$IDENTIFIER" = "unicode" ]; then
+    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+    else
+    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+    fi
+    printf "%s\n" "$SEP2"
+}
+
+while true; do
+    curl -s 'https://wttr.in/Chandigarh?format=1' > /tmp/Weather.tmp
+    sleep 10
+done &
+
+while true; do
+    # Network Interface Name
+    interface=$(ip route get 8.8.8.8 2>/dev/null| awk '{print $5}')
+
+    # Time
+    LOCALTIME=$(date +%a\ %d\ %b\ %H:%M)
+
+    # CPU
+    CPU_T=$(cat /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input)
+    CPU_TEMP=$(expr "$CPU_T" / 1000)
+    CPU_F=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
+    CPU_FREQ=$(expr "$CPU_F" / 1000)
+
+    # GPU TEMP
+    #GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
+
+    # Weather
+    WEATHER=$(cat /tmp/Weather.tmp)
+
+    # Used and total memory
+    MEMUSED=$(free -h | awk '(NR == 2) {print $3}')
+    MEMTOT=$(free -h |awk '(NR == 2) {print $2}')
+
+    # Used and total storage in / and /home (rounded to 1024B)
+    ROOTUSED=$(df -h | grep '/$' | awk '{print $3}')
+    ROOTTOT=$(df -h | grep '/$' | awk '{print $2}')
+    HOMEUSED=$(df -h | grep '/home$' | awk '{print $3}')
+    HOMETOT=$(df -h | grep '/home$' | awk '{print $2}')
+
+
+    # STATUS
+    #xsetroot -name "[🌐 $vel_recv $vel_trans (${CONNAME}) $PRIVATE : $PUBLIC][$(pulseaudio)][WEATHER $WEATHER][RAM ${MEMUSED}/${MEMTOT} HOME ${STOUSED}/${STOTOT} GPU-TEMP ${GPU_TEMP}°C CPU-TEMP ${CPU_TEMP}°C][$LOCALTIME]"
+    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(dwm_network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ HOME ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ ROOT ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#fabd2f^CPU ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ UPS $(dwm_ups) ^c#928374^|^d^ $LOCALTIME "
+
+    rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+    tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+
+    sleep $interval
+
+    rx2=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+    tx2=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+    rxs=$(expr $rx2 - $rx1)
+    txs=$(expr $tx2 - $tx1)
+    rxs=$(expr $rxs / $interval)
+    txs=$(expr $txs / $interval)
+    rxs=$(expr $rxs / 1024)
+    txs=$(expr $txs / 1024)
+done

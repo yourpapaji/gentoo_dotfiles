@@ -1,0 +1,12 @@
+nvim/.config/nvim/plugged/*
+ncmpcpp/.config/ncmpcpp/error.log
+scripts/.local/bin/clipmenu
+scripts/.local/bin/clipmenud
+scripts/.local/bin/epylint
+scripts/.local/bin/isort
+scripts/.local/bin/networkmanager_dmenu
+scripts/.local/bin/pylint
+scripts/.local/bin/pyreverse
+scripts/.local/bin/symilar
+scripts/.local/bin/ueberzug
+scripts/.local/bin/yapf
