@@ -28,7 +28,7 @@ dwm_ups () {
     if [ "$IDENTIFIER" = "unicode" ]; then
         if [ "$STATUS" = "ONLINE " ]; then
             printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
-	elif [ "$STATUS" = "ONBATT " ]; then
+        elif [ "$STATUS" = "ONBATT " ]; then
             printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
@@ -36,7 +36,7 @@ dwm_ups () {
     else
         if [ "$STATUS" = "ONLINE " ]; then
             printf "^c#b8bb26^🔌 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
-	elif [ "$STATUS" = "ONBATT " ]; then
+        elif [ "$STATUS" = "ONBATT " ]; then
             printf "^c#cc241d^🔋 %s%% %s^d^ %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
@@ -63,9 +63,11 @@ dwm_network () {
     printf "%s\n" "$SEP2"
 }
 
+# for weather
+LOCATION='Chandigarh'
 while true; do
-    curl -s 'https://wttr.in/Chandigarh?format=1' > /tmp/Weather.tmp
-    sleep 10
+    curl -s "https://wttr.in/${LOCATION}?format=1" > $HOME/.cache/Weather.tmp
+    sleep 60
 done &
 
 while true; do
@@ -85,7 +87,7 @@ while true; do
     #GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
 
     # Weather
-    WEATHER=$(cat /tmp/Weather.tmp)
+    WEATHER=$(cat $HOME/.cache/Weather.tmp)
 
     # Used and total memory
     MEMUSED=$(free -h | awk '(NR == 2) {print $3}')
