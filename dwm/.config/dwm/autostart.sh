@@ -7,10 +7,11 @@ run() {
   fi
 }
 
-run unclutter --timeout 2
-run redshift -l 30.73629:76.7884
+run /usr/libexec/geoclue-2.0/demos/agent
 run /usr/libexec/polkit-gnome-authentication-agent-1
 run clipmenud
+run unclutter --timeout 2
+run redshift
 run fehbg-random
 #run picom -b --config $XDG_CONFIG_HOME/picom.conf
 run compton -b --config $XDG_CONFIG_HOME/compton.conf
