@@ -30,7 +30,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1:", "2:", "3:", "4:", "5:", "6:", "7:", "8:", "9:" };
+static const char *tags[] = { "1:", "2:", "3:", "4:", "5:", "6:", "7:", "8:", "9:" };
 
 static const Rule rules[] = {
 	/* class                        instance    title     tags mask   iscentered  isfloating   monitor */
@@ -43,6 +43,7 @@ static const Rule rules[] = {
 	{ "qt5ct",                      NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Kvantum Manager",            NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Sxiv",                       NULL,       NULL,     0,          1,          1,           -1 },
+	{ "obs",                        NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Zathura",                    NULL,       NULL,     0,          1,          1,           -1 },
 	{ "libreoffice-startcenter",    NULL,       NULL,     1 << 6,     1,          1,           -1 },
 	{ "Meld",                       NULL,       NULL,     0,          1,          1,           -1 },
@@ -55,17 +56,14 @@ static const Rule rules[] = {
 	{ "Pavucontrol",                NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Nvidia-settings",            NULL,       NULL,     0,          1,          1,           -1 },
 	{ "VirtualBox Manager",         NULL,       NULL,     1 << 6,     1,          1,           -1 },
-	{ "Virt-manager",               NULL,       NULL,     1 << 6,     1,          1,           -1 },
-	{ "VirtualBoxVM",               NULL,       NULL,     0,          1,          1,           -1 },
-	{ "TelegramDesktop",            NULL,       NULL,     1 << 7,     1,          1,           -1 },
 	{ "st-256color",                NULL,       "htop",   0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "gotop",  0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "ncmpcpp",0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "ranger", 0,          1,          1,           -1 },
-	{ "Firefox",            		NULL,       NULL,     1 << 1,     1,          0,           -1 },
-	{ "Firefox",            		NULL,       "Library",0,          1,          1,           -1 },
-	{ "Firefox",            		NULL,	    "About Mozilla Firefox",0,1,	      1,	       -1 },
-	{ "Chromium-browser-ungoogled-chromium",NULL,NULL,    1 << 8,     1,          0,           -1 },
+	{ "Firefox",            	NULL,       NULL,     1 << 1,     1,          0,           -1 },
+	{ "Firefox",            	NULL,       "Library",1,          1,          1,           -1 },
+	{ "Firefox",            	NULL,	    "About Mozilla Firefox",0,1,      1,           -1 },
+	{ "Brave-browser",		NULL,	    NULL,    1 << 8,     1,          0,           -1 },
 };
 
 /* layout(s) */
