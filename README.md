@@ -1,1 +1,3 @@
-# gentoo_dotfiles
+## my dotfiles
+
+uses stow
