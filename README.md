@@ -1,5 +1,4 @@
-## my configs
----
+# my configs
 
 uses [stow](https://www.gnu.org/software/stow/)
 ```
