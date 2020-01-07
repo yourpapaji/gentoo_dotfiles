@@ -5,14 +5,14 @@ my configs
 
 
 
-### programs i've used:
+### programs used:
 ---
-to compile dwm and st -
+##### to compile dwm and st -
 + libX11-devel
 + libXft-devel
 + libXinerama-devel
 
-everything else -
+##### everything else -
 + setxkbmap
 + xsetroot
 + xautolock
