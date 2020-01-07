@@ -13,8 +13,7 @@ run clipmenud
 run unclutter --timeout 2
 run redshift
 run fehbg-random
-#run picom -b --config $XDG_CONFIG_HOME/picom.conf
-run compton -b --config $XDG_CONFIG_HOME/compton.conf
+run picom -b --config $XDG_CONFIG_HOME/picom.conf
 run dwm-status2d
 run mpd --no-daemon
 run pcmanfm --daemon-mode
