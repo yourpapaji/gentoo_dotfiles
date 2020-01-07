@@ -4,7 +4,7 @@ my configs
 ![screenshot](screenshots/desktop2.png)
 
 
-##### programs i've used:
+### programs i've used:
 ---
 to compile dwm and st -
 + libX11-devel
