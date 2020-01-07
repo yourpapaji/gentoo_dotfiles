@@ -5,7 +5,7 @@ my configs
 
 
 
-### programs used:
+## programs used:
 ---
 ##### to compile dwm and st -
 + libX11-devel
