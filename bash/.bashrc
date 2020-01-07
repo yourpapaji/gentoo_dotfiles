@@ -39,5 +39,6 @@ alias apc='apcaccess status'
 alias ls='exa --color=always --group-directories-first' # my preferred listing
 alias ll='exa --color=always --group-directories-first --long'
 alias la='exa --color=always --group-directories-first --all --long'  # all files and dirs
+alias ipdata='curl -s "https://ipinfo.io/"'
 # -> Prevents accidentally clobbering files.
 alias shell-level='printf "$SHLVL\n"'
