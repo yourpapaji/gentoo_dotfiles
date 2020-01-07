@@ -1,9 +1,0 @@
-#!/usr/bin/env dash
-# vim: ft=sh
-
-if pgrep -x "compton" > /dev/null
-then
-    killall compton
-else
-    compton -b --config $HOME/.config/compton.conf
-fi
