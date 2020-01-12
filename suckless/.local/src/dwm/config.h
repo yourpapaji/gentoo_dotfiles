@@ -63,7 +63,8 @@ static const Rule rules[] = {
 	{ "Firefox",            	NULL,       NULL,     1 << 1,     1,          0,           -1 },
 	{ "Firefox",            	NULL,       "Library",1,          1,          1,           -1 },
 	{ "Firefox",            	NULL,	    "About Mozilla Firefox",0,1,      1,           -1 },
-	{ "Brave-browser",		NULL,	    NULL,    1 << 8,     1,          0,           -1 },
+	{ "Chromium-browser-chromium",	NULL,       NULL,     1 << 1,     1,          0,           -1 },
+	{ "Brave-browser",		NULL,	    NULL,     1 << 8,     1,          0,           -1 },
 };
 
 /* layout(s) */
