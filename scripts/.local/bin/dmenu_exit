@@ -2,8 +2,8 @@
 # vim: ft=sh
 
 case "$(printf "reboot\\npoweroff\\nhibernate\\nsuspend" | dmenu -i -p "Choose:")" in
-	"reboot") doas reboot;;
-	"poweroff") doas shutdown -P now;;
-	"hibernate") doas pm-hibernate ;;
-	"suspend") doas pm-suspend ;;
+	"reboot") doas openrc-shutdown --no-write --reboot now;;
+	"poweroff") doas openrc-shutdown --no-write --poweroff now;;
+	"hibernate") doas hibernate;;
+	"suspend") doas hibernate-ram;;
 esac

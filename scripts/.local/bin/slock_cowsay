@@ -1,3 +1,0 @@
-#!/usr/bin/env dash
-# vim: ft=sh
-slock -m "$(cowsay "$(fortune)")"

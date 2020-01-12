@@ -10,3 +10,4 @@ scripts/.local/bin/pyreverse
 scripts/.local/bin/symilar
 scripts/.local/bin/ueberzug
 scripts/.local/bin/yapf
+scripts/.local/bin/tor-prompt

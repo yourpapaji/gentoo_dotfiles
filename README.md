@@ -1,7 +1,8 @@
-my configs
+karman's configs
 =================
 ![screenshot](screenshots/desktop1.png)
 ![screenshot](screenshots/desktop2.png)
+![screenshot](screenshots/desktop3.png)
 
 
 
@@ -42,6 +43,8 @@ my configs
 + nerd-fonts
 + networkmanager-dmenu
 + neovim (with [vim-plug](https://github.com/junegunn/vim-plug))
++ jack2 (for music production and video editing)
++ cadence
 + alsa
 + pulseaudio
 + pamixer
@@ -55,6 +58,7 @@ my configs
 + qt5ct
 
 ****mpv and picom configurations are optimized for my nvidia graphics card.****
+****pulseaudio bridged to jack2 is used for music production.****
 
 uses [stow](https://www.gnu.org/software/stow/) for managing dotfiles.
 

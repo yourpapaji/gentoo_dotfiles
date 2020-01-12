@@ -4,10 +4,13 @@
 # ufetch-gentoo - tiny system info for gentoo
 
 ## INFO
+distro=$(lsb_release -sd)
+
+distro=${distro##[\"\']}
+distro=${distro%%[\"\']}
 
 # user is already defined
 host="$(hostname)"
-os='Funtoo Linux'
 kernel="$(uname -r)"
 uptime="$(uptime -p | sed 's/up //')"
 packages="$(ls -d /var/db/pkg/*/* | wc -l)"
@@ -72,7 +75,7 @@ y9="${reset}${bold}${yellow}"       # yellow
 ####################Ahegao
 cat <<EOF
 ${m6} ⠄⠄⠄⢰⣧⣼⣯⠄⣸⣠⣶⣶⣦⣾⠄⠄⠄⠄⡀⠄⢀⣿⣿⠄⠄⠄⢸⡇⠄⠄  ${nc}${USER}${nc}@${nc}${host}${reset}
-${m6} ⠄⠄⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄  ${b7}OS:        ${ic}${os}${reset}
+${m6} ⠄⠄⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄  ${b7}OS:        ${ic}${distro}${reset}
 ${m6} ⠄⠄⢀⡋⣡⣴⣶⣶⡀⠄⠄⠙⢿⣿⣿⣿⣿⣿⣴⣿⣿⣿⢃⣤⣄⣀⣥⣿⣿⠄  ${b7}KERNEL:    ${ic}${kernel}${reset}
 ${m6} ⠄⠄⢸⣇⠻⣿⣿⣿⣧⣀⢀⣠⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⣿⣿⣿⠄  ${b7}UPTIME:    ${ic}${uptime}${reset}
 ${m6} ⠄⢀⢸⣿⣷⣤⣤⣤⣬⣙⣛⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⡍⠄⠄⢀⣤⣄⠉⠋⣰  ${b7}PACKAGES:  ${ic}${packages}${reset}

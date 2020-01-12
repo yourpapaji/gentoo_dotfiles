@@ -21,9 +21,12 @@ alt + u
 # NetworkManager
 alt + n
 	networkmanager_dmenu
+# dmenu calc
+alt + d
+	dmenu_calc
 # Screen Lock
 super + shift + l
-	slock_cowsay
+	slock_time
 # Process Monitors
 super + ctrl + {p,g}
 	$TERMINAL -g=120x40 -e {htop,gotop}
@@ -50,11 +53,11 @@ XF86Audio{Rewind,Forward}
 XF86AudioMedia
 	$TERMINAL -e ncmpcpp
 XF86PowerOff
-	doas poweroff
+	doas openrc-shutdown --no-write --poweroff now
 XF86Calculator
 	$TERMINAL -e bc
 XF86Sleep
-	doas pm-suspend
+	doas hibernate-ram
 XF86WWW
 	$BROWSER
 XF86DOS

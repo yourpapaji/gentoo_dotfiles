@@ -19,16 +19,11 @@
 #include <X11/keysym.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <security/pam_appl.h>
-#include <security/pam_misc.h>
 
 #include "arg.h"
 #include "util.h"
 
 char *argv0;
-static int pam_conv(int num_msg, const struct pam_message **msg, struct pam_response **resp, void *appdata_ptr);
-struct pam_conv pamc = {pam_conv, NULL};
-char passwd[256];
 
 /* global count to prevent repeated error messages */
 int count_error = 0;
@@ -37,7 +32,6 @@ enum {
 	INIT,
 	INPUT,
 	FAILED,
-	PAM,
 	NUMCOLS
 };
 
@@ -65,31 +59,6 @@ die(const char *errstr, ...)
 	vfprintf(stderr, errstr, ap);
 	va_end(ap);
 	exit(1);
-}
-
-static int
-pam_conv(int num_msg, const struct pam_message **msg,
-		struct pam_response **resp, void *appdata_ptr)
-{
-	int retval = PAM_CONV_ERR;
-	for(int i=0; i<num_msg; i++) {
-		if (msg[i]->msg_style == PAM_PROMPT_ECHO_OFF &&
-				strncmp(msg[i]->msg, "Password: ", 10) == 0) {
-			struct pam_response *resp_msg = malloc(sizeof(struct pam_response));
-			if (!resp_msg)
-				die("malloc failed\n");
-			char *password = malloc(strlen(passwd) + 1);
-			if (!password)
-				die("malloc failed\n");
-			memset(password, 0, strlen(passwd) + 1);
-			strcpy(password, passwd);
-			resp_msg->resp_retcode = 0;
-			resp_msg->resp = password;
-			resp[i] = resp_msg;
-			retval = PAM_SUCCESS;
-		}
-	}
-	return retval;
 }
 
 #ifdef __linux__
@@ -248,8 +217,6 @@ gethash(void)
 	}
 #endif /* HAVE_SHADOW_H */
 
-	/* pam, store user name */
-	hash = pw->pw_name;
 	return hash;
 }
 
@@ -258,12 +225,11 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
        const char *hash)
 {
 	XRRScreenChangeNotifyEvent *rre;
-	char buf[32];
-	int num, screen, running, failure, oldc, retval;
+	char buf[32], passwd[256], *inputhash;
+	int num, screen, running, failure, oldc;
 	unsigned int len, color;
 	KeySym ksym;
 	XEvent ev;
-	pam_handle_t *pamh;
 
 	len = 0;
 	running = 1;
@@ -290,26 +256,10 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 			case XK_Return:
 				passwd[len] = '\0';
 				errno = 0;
-				retval = pam_start(pam_service, hash, &pamc, &pamh);
-				color = PAM;
-				for (screen = 0; screen < nscreens; screen++) {
-					XSetWindowBackground(dpy, locks[screen]->win, locks[screen]->colors[color]);
-					XClearWindow(dpy, locks[screen]->win);
-					XRaiseWindow(dpy, locks[screen]->win);
-				}
-				XSync(dpy, False);
-
-				if (retval == PAM_SUCCESS)
-					retval = pam_authenticate(pamh, 0);
-				if (retval == PAM_SUCCESS)
-					retval = pam_acct_mgmt(pamh, 0);
-
-				running = 1;
-				if (retval == PAM_SUCCESS)
-					running = 0;
+				if (!(inputhash = crypt(passwd, hash)))
+					fprintf(stderr, "slock: crypt: %s\n", strerror(errno));
 				else
-					fprintf(stderr, "slock: %s\n", pam_strerror(pamh, retval));
-				pam_end(pamh, retval);
+					running = !!strcmp(inputhash, hash);
 				if (running) {
 					XBell(dpy, 100);
 					failure = 1;
@@ -499,9 +449,10 @@ main(int argc, char **argv) {
 	dontkillme();
 #endif
 
-	/* the contents of hash are used to transport the current user name */
 	hash = gethash();
 	errno = 0;
+	if (!crypt("", hash))
+		die("slock: crypt: %s\n", strerror(errno));
 
 	if (!(dpy = XOpenDisplay(NULL)))
 		die("slock: cannot open display\n");

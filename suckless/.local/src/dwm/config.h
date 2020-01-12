@@ -8,10 +8,6 @@ static const unsigned int gappiv    = 8;        /* vert inner gap between window
 static const unsigned int gappoh    = 16;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 16;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 1;   /* systray spacing */
-static const int systraypinningfailfirst = 0;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "FuraCode Nerd Font:style=Regular:pixelsize=12:antialias=true:autohint=false", "Font Awesome Brands:pixelsize=12", "Font Awesome Free:pixelsize=12" };
@@ -39,6 +35,7 @@ static const Rule rules[] = {
 	{ "Gimp",                       NULL,       NULL,     1 << 6,     1,          1,           -1 },
 	{ "mpv",                        NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Pcmanfm",                    NULL,       NULL,     0,          1,          1,           -1 },
+	{ "Xarchiver",                  NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Lxappearance",               NULL,       NULL,     0,          1,          1,           -1 },
 	{ "qt5ct",                      NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Kvantum Manager",            NULL,       NULL,     0,          1,          1,           -1 },
@@ -54,11 +51,14 @@ static const Rule rules[] = {
 	{ "steam_app_306130",           NULL,       NULL,     1 << 4,     1,          1,           -1 },
 	{ "bethesda.net_launcher.exe",  NULL,       NULL,     1 << 4,     1,          1,           -1 },
 	{ "Pavucontrol",                NULL,       NULL,     0,          1,          1,           -1 },
+	{ "Cadence",                    NULL,       NULL,     0,          1,          1,           -1 },
+	{ "Gnome-disks",                NULL,       NULL,     0,          1,          1,           -1 },
 	{ "Nvidia-settings",            NULL,       NULL,     0,          1,          1,           -1 },
 	{ "VirtualBox Manager",         NULL,       NULL,     1 << 6,     1,          1,           -1 },
 	{ "st-256color",                NULL,       "htop",   0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "gotop",  0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "ncmpcpp",0,          1,          1,           -1 },
+	{ "st-256color",             	NULL,       "pcmanfm-open",0,     1,          1,           -1 },
 	{ "st-256color",             	NULL,       "ranger", 0,          1,          1,           -1 },
 	{ "Firefox",            	NULL,       NULL,     1 << 1,     1,          0,           -1 },
 	{ "Firefox",            	NULL,       "Library",1,          1,          1,           -1 },
@@ -76,8 +76,6 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-	{ "|M|",      centeredmaster },
-	{ ">M>",      centeredfloatingmaster },
 };
 
 /* key definitions */
@@ -135,8 +133,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },

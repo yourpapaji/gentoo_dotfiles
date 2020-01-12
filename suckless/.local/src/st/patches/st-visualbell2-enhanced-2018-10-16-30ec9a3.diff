@@ -1,0 +1,308 @@
+From bcc850d57fb4cb6941008fb2808d4d0d373aa5f8 Mon Sep 17 00:00:00 2001
+From: "Avi Halachmi (:avih)" <avihpit@yahoo.com>
+Date: Mon, 15 Oct 2018 01:06:01 +0300
+Subject: [PATCH 1/2] [vbell2] add visual bell with two rendering modes
+
+- Inverse the whole terminal - "standard" visual-bell, a bit jarring.
+- Inverse outer (border) cells - much less jarring, yet plenty visible.
+
+Note: blink used a timeout of 1us after drawing, probably to
+re-calculate the timeout without being affected by draw speed. This was
+changed to 1ms for code simplicity, and should be inconsequential.
+---
+ config.def.h | 11 ++++++++
+ st.c         |  1 -
+ st.h         |  1 +
+ x.c          | 77 +++++++++++++++++++++++++++++++++++++++-------------
+ 4 files changed, 70 insertions(+), 20 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 823e79f..0915ce5 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -62,6 +62,17 @@ static unsigned int cursorthickness = 2;
+  */
+ static int bellvolume = 0;
+ 
++/*
++ * visual-bell timeout (set to 0 to disable visual-bell).
++ */
++static int vbelltimeout = 0;
++/*
++ * visual bell mode when enabled:
++ *   1: Inverse whole screen
++ *   2: Inverse outer (border) cells
++ */
++static int vbellmode = 1;
++
+ /* default TERM value */
+ char *termname = "st-256color";
+ 
+diff --git a/st.c b/st.c
+index 46cf2da..1229479 100644
+--- a/st.c
++++ b/st.c
+@@ -193,7 +193,6 @@ static void tsetscroll(int, int);
+ static void tswapscreen(void);
+ static void tsetmode(int, int, int *, int);
+ static int twrite(const char *, int, int);
+-static void tfulldirt(void);
+ static void tcontrolcode(uchar );
+ static void tdectest(char );
+ static void tdefutf8(char);
+diff --git a/st.h b/st.h
+index 38c61c4..619d716 100644
+--- a/st.h
++++ b/st.h
+@@ -89,6 +89,7 @@ int tattrset(int);
+ void tnew(int, int);
+ void tresize(int, int);
+ void tsetdirtattr(int);
++void tfulldirt();
+ void ttyhangup(void);
+ int ttynew(char *, char *, char *, char **);
+ size_t ttyread(void);
+diff --git a/x.c b/x.c
+index 00cb6b1..7e66c6d 100644
+--- a/x.c
++++ b/x.c
+@@ -82,6 +82,8 @@ typedef struct {
+ 	int cw; /* char width  */
+ 	int mode; /* window state/mode flags */
+ 	int cursor; /* cursor style */
++	int vbellset; /* 1 during visual bell, 0 otherwise */
++	struct timespec lastvbell;
+ } TermWindow;
+ 
+ typedef struct {
+@@ -173,6 +175,9 @@ static void mousereport(XEvent *);
+ static char *kmap(KeySym, uint);
+ static int match(uint, uint);
+ 
++static void vbellbegin();
++static int isvbellcell(int x, int y);
++
+ static void run(void);
+ static void usage(void);
+ 
+@@ -1528,6 +1533,8 @@ xdrawline(Line line, int x1, int y1, int x2)
+ 			continue;
+ 		if (selected(x, y1))
+ 			new.mode ^= ATTR_REVERSE;
++		if (win.vbellset && isvbellcell(x, y1))
++			new.mode ^= ATTR_REVERSE;
+ 		if (i > 0 && ATTRCMP(base, new)) {
+ 			xdrawglyphfontspecs(specs, base, i, ox, y1);
+ 			specs += i;
+@@ -1610,6 +1617,28 @@ xseturgency(int add)
+ 	XFree(h);
+ }
+ 
++int
++isvbellcell(int x, int y)
++{
++	if (vbellmode == 1)
++		return 1;
++	if (vbellmode == 2)
++		return y == 0 || y == win.th / win.ch - 1 ||
++		       x == 0 || x == win.tw / win.cw - 1;
++	return 0;
++}
++
++void
++vbellbegin() {
++	clock_gettime(CLOCK_MONOTONIC, &win.lastvbell);
++	if (win.vbellset) /* already visible, just extend win.lastvbell */
++		return;
++	win.vbellset = 1;
++	tfulldirt();
++	draw();
++	XFlush(xw.dpy);
++}
++
+ void
+ xbell(void)
+ {
+@@ -1617,6 +1646,8 @@ xbell(void)
+ 		xseturgency(1);
+ 	if (bellvolume)
+ 		XkbBell(xw.dpy, xw.win, bellvolume, (Atom)NULL);
++	if (vbelltimeout)
++		vbellbegin();
+ }
+ 
+ void
+@@ -1770,7 +1801,7 @@ run(void)
+ 	int xfd = XConnectionNumber(xw.dpy), xev, blinkset = 0, dodraw = 0;
+ 	int ttyfd;
+ 	struct timespec drawtimeout, *tv = NULL, now, last, lastblink;
+-	long deltatime;
++	long deltatime, to_ms, remain;
+ 
+ 	/* Waiting for window mapping */
+ 	do {
+@@ -1822,11 +1853,28 @@ run(void)
+ 		tv = &drawtimeout;
+ 
+ 		dodraw = 0;
+-		if (blinktimeout && TIMEDIFF(now, lastblink) > blinktimeout) {
+-			tsetdirtattr(ATTR_BLINK);
+-			win.mode ^= MODE_BLINK;
+-			lastblink = now;
+-			dodraw = 1;
++		to_ms = -1; /* timeout in ms, indefinite if negative */
++		if (blinkset) {
++			remain = blinktimeout - TIMEDIFF(now, lastblink);
++			if (remain <= 0) {
++				dodraw = 1;
++				remain = 1; /* draw, wait 1ms, and re-calc */
++				tsetdirtattr(ATTR_BLINK);
++				win.mode ^= MODE_BLINK;
++				lastblink = now;
++			}
++			to_ms = remain;
++		}
++		if (win.vbellset) {
++			remain = vbelltimeout - TIMEDIFF(now, win.lastvbell);
++			if (remain <= 0) {
++				dodraw = 1;
++				remain = -1; /* draw (clear), and that's it */
++				tfulldirt();
++				win.vbellset = 0;
++			}
++			if (remain >= 0 && (to_ms < 0 || remain < to_ms))
++				to_ms = remain;
+ 		}
+ 		deltatime = TIMEDIFF(now, last);
+ 		if (deltatime > 1000 / (xev ? xfps : actionfps)) {
+@@ -1849,19 +1897,10 @@ run(void)
+ 			if (xev && !FD_ISSET(xfd, &rfd))
+ 				xev--;
+ 			if (!FD_ISSET(ttyfd, &rfd) && !FD_ISSET(xfd, &rfd)) {
+-				if (blinkset) {
+-					if (TIMEDIFF(now, lastblink) \
+-							> blinktimeout) {
+-						drawtimeout.tv_nsec = 1000;
+-					} else {
+-						drawtimeout.tv_nsec = (1E6 * \
+-							(blinktimeout - \
+-							TIMEDIFF(now,
+-								lastblink)));
+-					}
+-					drawtimeout.tv_sec = \
+-					    drawtimeout.tv_nsec / 1E9;
+-					drawtimeout.tv_nsec %= (long)1E9;
++				if (to_ms >= 0) {
++					static const long k = 1E3, m = 1E6;
++					drawtimeout.tv_sec = to_ms / k;
++					drawtimeout.tv_nsec = (to_ms % k) * m;
+ 				} else {
+ 					tv = NULL;
+ 				}
+-- 
+2.19.1
+
+
+From 587d0fdcdcccb601f61de4f6186ae310c8adb0e3 Mon Sep 17 00:00:00 2001
+From: "Avi Halachmi (:avih)" <avihpit@yahoo.com>
+Date: Tue, 16 Oct 2018 16:04:45 +0300
+Subject: [PATCH 2/2] [vbell2] visual bell: experimental circle rendering mode
+
+This commit experiments with alternative rendering of visual bell,
+and as such it's extensively/excessively configurable.
+
+It renders an overlay of a circle with configurable colors (base,
+outline), position and size. Defaults to the center of the window.
+
+Size can be relative to window or chars width, and allows for instance
+to place it at the middle/side of a top/bottom tmux status-bar with
+exact char height to make it look like a flashing LED at the bar, etc.
+---
+ config.def.h | 12 ++++++++++++
+ x.c          | 24 +++++++++++++++++++++++-
+ 2 files changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index 0915ce5..a1c7f24 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -70,8 +70,20 @@ static int vbelltimeout = 0;
+  * visual bell mode when enabled:
+  *   1: Inverse whole screen
+  *   2: Inverse outer (border) cells
++ *   3: Draw a filled circle.
+  */
+ static int vbellmode = 1;
++/*
++ * for vbellmode == 3 (circle) the following parameters apply:
++ * - base and outline colors (colorname index - see below).
++ * - radius: relative to window width, or if negative: relative to cell-width.
++ * - position: relative to window width/height (0 and 1 are at the edges).
++ */
++static int vbellcolor = 3;
++static int vbellcolor_outline = 1;
++static float vbellradius = 0.03;
++static float vbellx = 0.5;
++static float vbelly = 0.5;
+ 
+ /* default TERM value */
+ char *termname = "st-256color";
+diff --git a/x.c b/x.c
+index 7e66c6d..eb895d4 100644
+--- a/x.c
++++ b/x.c
+@@ -177,6 +177,8 @@ static int match(uint, uint);
+ 
+ static void vbellbegin();
+ static int isvbellcell(int x, int y);
++static void xdrawvbell();
++static void xfillcircle(int x, int y, int r, uint color_ix);
+ 
+ static void run(void);
+ static void usage(void);
+@@ -1554,6 +1556,9 @@ xdrawline(Line line, int x1, int y1, int x2)
+ void
+ xfinishdraw(void)
+ {
++	if (vbellmode == 3 && win.vbellset)
++		xdrawvbell();
++
+ 	XCopyArea(xw.dpy, xw.buf, xw.win, dc.gc, 0, 0, win.w,
+ 			win.h, 0, 0);
+ 	XSetForeground(xw.dpy, dc.gc,
+@@ -1617,6 +1622,22 @@ xseturgency(int add)
+ 	XFree(h);
+ }
+ 
++void
++xfillcircle(int x, int y, int r, uint color_ix)
++{
++	XSetForeground(xw.dpy, dc.gc, dc.col[color_ix].pixel);
++	XFillArc(xw.dpy, xw.buf, dc.gc, x - r, y - r, r * 2, r * 2, 0, 360*64);
++}
++
++void
++xdrawvbell() {
++	int r = round(vbellradius * (vbellradius > 0 ? win.w : -win.cw));
++	int x = borderpx + r + vbellx * (win.tw - 2 * r);
++	int y = borderpx + r + vbelly * (win.th - 2 * r);
++	xfillcircle(x, y, r, vbellcolor_outline);
++	xfillcircle(x, y, r / 1.2, vbellcolor); /* 1.2 - an artistic choice */
++}
++
+ int
+ isvbellcell(int x, int y)
+ {
+@@ -1634,7 +1655,8 @@ vbellbegin() {
+ 	if (win.vbellset) /* already visible, just extend win.lastvbell */
+ 		return;
+ 	win.vbellset = 1;
+-	tfulldirt();
++	if (vbellmode != 3) /* 3 is an overlay, no need to re-render cells */
++		tfulldirt();
+ 	draw();
+ 	XFlush(xw.dpy);
+ }
+-- 
+2.19.1
+

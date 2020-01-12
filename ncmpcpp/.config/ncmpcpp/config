@@ -543,9 +543,15 @@ external_editor = nvim
 #active_window_border = red
 #
 ##
+audio_output {
+       type            "fifo"
+       name            "Visualizer feed"
+       path            "/tmp/mpd.fifo"
+       format          "48000:16:2"
+}
 visualizer_fifo_path = "/tmp/mpd.fifo"
 visualizer_output_name = "my_fifo"
 #visualizer_sync_interval = "30" 
 #visualizer_in_stereo = "yes"
-#visualizer_type = "spectrum"
+visualizer_type = "spectrum"
 visualizer_look = "+|"
