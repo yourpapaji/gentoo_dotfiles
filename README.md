@@ -57,7 +57,7 @@ karman's configs
 + pcmanfm
 + qt5ct
 
-****mpv and picom configurations are optimized for my nvidia graphics card.****
+****mpv and picom configurations are optimized for my nvidia graphics card.***
 
 uses [stow](https://www.gnu.org/software/stow/) for managing dotfiles.
 
