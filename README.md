@@ -58,7 +58,6 @@ karman's configs
 + qt5ct
 
 ****mpv and picom configurations are optimized for my nvidia graphics card.****
-****pulseaudio bridged to jack2 is used for music production.****
 
 uses [stow](https://www.gnu.org/software/stow/) for managing dotfiles.
 
