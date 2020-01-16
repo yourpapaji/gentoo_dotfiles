@@ -12,7 +12,6 @@ set undofile
 set undodir=~/.cache/nvim/undo
 set sb
 set spr
-"set lazyredraw
 
 " Set leader before loading all plugins
 let mapleader = ";"
@@ -58,7 +57,6 @@ set grepprg=rg\ --vimgrep\ $*
 set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
 set hidden
 set shortmess=aFc
-"set signcolumn=yes
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
@@ -190,9 +188,6 @@ let g:coc_global_extensions = [
 " Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
-
-" always show signcolumns
-" set signcolumn=yes
 
 " NeoFormat
 " Enable alignment

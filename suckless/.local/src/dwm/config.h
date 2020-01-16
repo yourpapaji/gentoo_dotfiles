@@ -60,6 +60,7 @@ static const Rule rules[] = {
 	{ "st-256color",             	NULL,       "ncmpcpp",0,          1,          1,           -1 },
 	{ "st-256color",             	NULL,       "pcmanfm-open",0,     1,          1,           -1 },
 	{ "st-256color",             	NULL,       "ranger", 0,          1,          1,           -1 },
+	{ "st-256color",             	NULL,       "nmtui",  0,          1,          1,           -1 },
 	{ "Firefox",            	NULL,       NULL,     1 << 1,     1,          0,           -1 },
 	{ "Firefox",            	NULL,       "Library",1,          1,          1,           -1 },
 	{ "Firefox",            	NULL,	    "About Mozilla Firefox",0,1,      1,           -1 },

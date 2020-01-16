@@ -8,9 +8,9 @@ fi
 
 # user init scripts and settings
 [ -r /etc/X11/xinit/.Xmodmap ] && xmodmap /etc/X11/xinit/.Xmodmap
-[ -r ~/.Xmodmap ] && xmodmap ~/.Xmodmap
-[ -r ~/.Xresources ] && xrdb -merge ~/.Xresources
-[ -r ~/.xprofile ] && . ~/.xprofile
+[ -r $HOME/.Xmodmap ] && xmodmap $HOME/.Xmodmap
+[ -r $HOME/.Xresources ] && xrdb -merge $HOME/.Xresources
+[ -r $HOME/.xprofile ] && . $HOME/.xprofile
 
 # session
 exec dbus-launch --exit-with-session startdwm

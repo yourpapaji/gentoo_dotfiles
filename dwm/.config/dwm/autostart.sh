@@ -17,6 +17,7 @@ run fehbg-random
 run picom -b --config $XDG_CONFIG_HOME/picom.conf
 run dwm-status2d
 run mpd --no-daemon
-run pcmanfm --daemon-mode
+run pcmanfm --no-desktop --daemon-mode
 run transmission-daemon --paused
 run dunst
+run cadence
