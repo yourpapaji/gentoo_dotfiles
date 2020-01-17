@@ -85,7 +85,7 @@
 
     ### Text ###
 
-    font = FuraCode Nerd Font Mono 9
+    font = JetBrains Mono 9
 
 
     # The spacing between lines.  If the height is smaller than the

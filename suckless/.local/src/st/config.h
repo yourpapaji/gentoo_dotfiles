@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "FuraCode Nerd Font:pixelsize=14:antialias=true:autohint=false";
+static char *font = "JetBrains Mono:pixelsize=14:antialias=true:autohint=false";
 static int borderpx = 10;
 
 /*
@@ -49,7 +49,7 @@ static unsigned int actionfps = 60;
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
  * attribute.
  */
-static unsigned int blinktimeout = 500;
+static unsigned int blinktimeout = 800;
 
 /*
  * thickness of underline and bar cursors
@@ -72,12 +72,12 @@ const int boxdraw_braille = 0;
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
  * it
  */
-static int bellvolume = 0;
+static int bellvolume = 100;
 
 /*
  * visual-bell timeout (set to 0 to disable visual-bell).
  */
-static int vbelltimeout = 0;
+static int vbelltimeout = 100;
 /*
  * visual bell mode when enabled:
  *   1: Inverse whole screen
@@ -154,7 +154,7 @@ static unsigned int defaultrcs = 257;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 2;
+static unsigned int cursorshape = 1;
 
 /*
  * Default columns and rows numbers
