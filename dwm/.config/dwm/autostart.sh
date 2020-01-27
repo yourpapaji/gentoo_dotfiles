@@ -14,10 +14,8 @@ run clipmenud
 run unclutter --timeout 2
 run redshift
 run fehbg-random
-run picom -b --config $XDG_CONFIG_HOME/picom.conf
+run picom --dbus --daemon --config $XDG_CONFIG_HOME/picom.conf
 run dwm-status2d
 run mpd --no-daemon
 run pcmanfm --no-desktop --daemon-mode
-run transmission-daemon --paused
-run dunst
 run cadence

@@ -1,5 +1,4 @@
-#!/usr/bin/env dash
-# vim: ft=sh
+#!/bin/sh
 
 while true; do
     feh --randomize --bg-scale $HOME/.local/wallpapers/* &

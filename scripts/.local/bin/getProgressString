@@ -1,5 +1,4 @@
-#!/usr/bin/env dash
-# vim: ft=sh
+#!/bin/sh
 
 # Source: https://github.com/Fabian-G/dotfiles/blob/master/scripts/bin/getProgressString
 

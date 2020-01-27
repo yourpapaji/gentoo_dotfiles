@@ -9,10 +9,10 @@
             <bool>true</bool>
         </edit>
         <edit name="hintstyle" mode="assign">
-            <const>hintslight</const>
+            <const>hintnone</const>
         </edit>
         <edit name="rgba" mode="assign">
-            <const>rgb</const>
+            <const>none</const>
         </edit>
         <edit name="autohint" mode="assign">
             <bool>true</bool>

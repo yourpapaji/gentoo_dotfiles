@@ -1,5 +1,4 @@
-#!/usr/bin/env dash
-# vim: ft=sh
+#!/bin/sh
 
 ## Pulseaudio volume controls
 ## Requires the following script for it to work:

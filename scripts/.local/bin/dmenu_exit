@@ -1,5 +1,4 @@
-#!/usr/bin/env dash
-# vim: ft=sh
+#!/bin/sh
 
 case "$(printf "reboot\\npoweroff\\nhibernate\\nsuspend" | dmenu -i -p "Choose:")" in
 	"reboot") doas openrc-shutdown --no-write --reboot now;;

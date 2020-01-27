@@ -1,4 +1,4 @@
-#!/usr/bin/env dash
+#!/bin/sh
 
 while true; do
     # Log stderror to a file

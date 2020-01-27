@@ -1,4 +1,4 @@
-#!/usr/bin/env dash
+#!/bin/sh
 
 # Terminal
 super + Return
@@ -42,6 +42,8 @@ super + ctrl + f
 # Take screenshot
 Print
 	screenshot
+super + Print
+	selectshot
 
 # Other Keys
 XF86Audio{Next,Prev}

@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrains Mono:pixelsize=14:antialias=true:autohint=false";
+static char *font = "JetBrainsMono Nerd Font:pixelsize=14:antialias=true:autohint=false";
 static int borderpx = 10;
 
 /*
@@ -49,7 +49,7 @@ static unsigned int actionfps = 60;
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
  * attribute.
  */
-static unsigned int blinktimeout = 800;
+static unsigned int blinktimeout = 500;
 
 /*
  * thickness of underline and bar cursors
@@ -119,7 +119,7 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	"#1d2021", /* hard contrast: #1d2021 / medium: #282828 / soft contrast: #32302f */
+	"#181b1c", /* hard contrast: #1d2021 / medium: #282828 / soft contrast: #32302f */
 	"#cc241d",
 	"#98971a",
 	"#d79921",
@@ -154,7 +154,7 @@ static unsigned int defaultrcs = 257;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 1;
+static unsigned int cursorshape = 2;
 
 /*
  * Default columns and rows numbers

@@ -85,7 +85,7 @@
 
     ### Text ###
 
-    font = JetBrains Mono 9
+    font = JetBrainsMono Nerd Font 9
 
 
     # The spacing between lines.  If the height is smaller than the
@@ -167,7 +167,6 @@
 
     # Paths to default icons.
     icon_path = /usr/share/icons/breeze-dark/status/16:/usr/share/icons/breeze-dark/devices/16/
-    #icon_path = /usr/share/icons/Paper/16x16/status:/usr/share/icons/Paper/16x16/devices/
 
     ### History ###
 
@@ -273,10 +272,6 @@
 
    # Context menu.
     context = ctrl+shift+period
-
-[frame]
-    width = 2
-    color = "#83a598"
 
 [urgency_low]
     background = "#1d2021"

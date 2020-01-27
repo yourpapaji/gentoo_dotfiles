@@ -6,7 +6,7 @@ syntax on
 set encoding=utf8
 set clipboard=unnamed
 set clipboard^=unnamed,unnamedplus
-set shell=/bin/dash
+set shell=/bin/bash
 set mouse=a
 set undofile
 set undodir=~/.cache/nvim/undo
@@ -65,7 +65,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -205,8 +204,6 @@ let NERDTreeDirArrows = 1
 let NERDTreeQuitOnOpen = 1
 let NERDTreeShowHidden=1
 map <C-n> :NERDTreeToggle<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

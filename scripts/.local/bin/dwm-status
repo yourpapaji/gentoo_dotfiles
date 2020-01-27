@@ -8,13 +8,13 @@ pulseaudio() {
 VOL=$(pamixer --get-volume-human | tr -d '%')
 printf "%s" "$SEP1"
     if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
-        printf "^c#cc241d^🔇^d^"
+        printf "🔇"
     elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
-        printf "^c#cc241d^🔈 %s%%^d^" "$VOL"
+        printf "🔈 %s%%" "$VOL"
     elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
-        printf "^c#d79921^🔉 %s%%^d^" "$VOL"
+        printf "🔉 %s%%" "$VOL"
     else
-        printf "^c#b8bb26^🔊 %s%%^d^" "$VOL"
+        printf "🔊 %s%%" "$VOL"
     fi
 }
 
@@ -26,17 +26,17 @@ dwm_ups () {
     printf "%s" "$SEP1"
     if [ "$IDENTIFIER" = "unicode" ]; then
         if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "🔌 %s%% %s%sMin" "$CHARGE" "$STATUS" "$TIMELEFT"
         elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "🔋 %s%% %s%sMin" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         fi
     else
         if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "🔌 %s%% %s%sMin" "$CHARGE" "$STATUS" "$TIMELEFT"
         elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+            printf "🔋 %s%% %s%sMin" "$CHARGE" "$STATUS" "$TIMELEFT"
         else
             printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
         fi
@@ -55,9 +55,9 @@ dwm_network () {
 
     printf "%s" "$SEP1"
     if [ "$IDENTIFIER" = "unicode" ]; then
-    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+    printf "🌐 %s (%s:%s)" "$CONNAME" "$PRIVATE" "$PUBLIC"
     else
-    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+    printf "🌐 %s (%s:%s)" "$CONNAME" "$PRIVATE" "$PUBLIC"
     fi
     printf "%s\n" "$SEP2"
 }
@@ -101,7 +101,7 @@ while true; do
 
 
     # STATUS
-    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(dwm_network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(dwm_ups) ^c#928374^|^d^ $LOCALTIME "
+    xsetroot -name " ▼ ${rxs}KiB/s ▲ ${txs}KiB/s $(dwm_network) [$(pulseaudio)] [$WEATHER] [: ${HOMEUSED}/${HOMETOT} /: ${ROOTUSED}/${ROOTTOT} RAM ${MEMUSED}/${MEMTOT}] [GPU ${GPU_TEMP}°C  ${CPU_FREQ}Mhz ${CPU_TEMP}°C] [$(dwm_ups)] [$LOCALTIME] "
 
     rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
     tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)
