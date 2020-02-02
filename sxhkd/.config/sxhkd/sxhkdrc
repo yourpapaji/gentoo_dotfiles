@@ -2,7 +2,7 @@
 
 # Terminal
 super + Return
-	$TERMINAL -e tmux
+	kitty
 # Programs Menu
 super + p
 	j4-dmenu-desktop
