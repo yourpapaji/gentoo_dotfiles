@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Terminal
-super + Return
-	kitty
+{super,alt} + Return
+	{$TERMINAL -e tmux,kitty}
 # Programs Menu
 super + p
 	j4-dmenu-desktop
