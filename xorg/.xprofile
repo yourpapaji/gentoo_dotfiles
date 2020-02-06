@@ -7,7 +7,7 @@
 
 # stuff
 export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
-export PAGER='less'
+export PAGER="less"
 export TERMINAL="st"
 export TERMCMD="st"
 export TERM="st"
@@ -17,15 +17,27 @@ export FILE="pcmanfm"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export LANG="en_US.UTF8"
 export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 export SUDO_EDITOR=/usr/bin/nvim
 export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
-export SXHKD_SHELL='/bin/sh'
+export SXHKD_SHELL="/bin/sh"
 export GTK_USE_PORTAL=1
 export STEAM_RUNTIME=1
 export _JAVA_AWT_WM_NONREPARENTING=1
+export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
+export LESSHISTFILE="-"
+export WGETRC="$HOME/.config/wget/wgetrc"
+export INPUTRC="$HOME/.config/inputrc"
+export TERMINFO="$HOME/.local/share/terminfo"
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
+export CCACHE_CONFIGPATH="$HOME/.config/ccache.config"
+export CCACHE_DIR="$HOME/.cache/ccache"
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_RUNTIME_DIR="$HOME/.local"
 export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_CURRENT_DESKTOP='dwm'
 

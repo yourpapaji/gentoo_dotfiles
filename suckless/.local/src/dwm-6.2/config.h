@@ -11,10 +11,10 @@ static const int smartgaps          = 1;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9" };
-static const char col_gray1[]       = "#181b1c";
+static const char col_gray1[]       = "#1d2021";
 static const char col_gray2[]       = "#458588";
 static const char col_gray3[]       = "#928374";
-static const char col_gray4[]       = "#181b1c";
+static const char col_gray4[]       = "#1d2021";
 static const char col_cyan[]        = "#458588";
 static const char col_font[]        = "#ebdbb2";
 static const char col_orange[]      = "#d79921";
