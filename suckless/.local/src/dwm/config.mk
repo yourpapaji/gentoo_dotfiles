@@ -1,5 +1,5 @@
 # dwm version
-VERSION = 6.2-k4rm4n
+VERSION = 6.2
 
 # Customize below to fit your system
 
