@@ -11,3 +11,6 @@ scripts/.local/bin/symilar
 scripts/.local/bin/ueberzug
 scripts/.local/bin/yapf
 scripts/.local/bin/tor-prompt
+zsh/.config/zsh/plugins/*
+zsh/.config/zsh/.zcalc_history
+zsh/.config/zsh/.zcompdump
