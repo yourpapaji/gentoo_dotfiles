@@ -8,11 +8,6 @@ setopt numericglobsort   # Sort filenames numerically when it makes sense
 setopt appendhistory     # Immediately append history instead of overwriting
 setopt histignorealldups # If a new command is a duplicate, remove the older one
 setopt autocd            # if only directory path is entered, cd there.
-zstyle ':completion::complete:*' gain-privileges 1
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case insensitive tab completion
-# Speed up completions
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion::complete:*' use-cache 1
 
 # environment
 export LANG=en_US.UTF-8
@@ -27,14 +22,18 @@ bindkey '^[[1;5D' backward-word     #
 bindkey '^[[1;5C' forward-word      #
 bindkey '^H' backward-kill-word     # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo                 # Shift+tab undo last action
-WORDCHARS=${WORDCHARS//\/[&._;]}
+WORDCHARS=${WORDCHARS//\/[&.;]}
 
-# Prompt
-autoload -U compinit colors zcalc
+# Completions
 zstyle ':completion:*' menu select
 zstyle ':completion:*' rehash true  # automatically find new executables in path
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.cache
+zstyle ':completion:*' squeeze-slashes true
+autoload -U compinit colors zcalc
 compinit
 
+# Prompt
 PROMPT='%(?.%F{blue}√.%F{red}?%?)%f %B%F{green}%1~%f%b %# '
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
@@ -48,16 +47,13 @@ zstyle ':vcs_info:*' enable git
 source $ZDOTDIR/plugins/colorize/colorize.plugin.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374,underline"
-
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-
 source $ZDOTDIR/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
 plugin_update() {
 	find $ZDOTDIR/plugins -maxdepth 3 -name .git -type d | rev | cut -c 6- | rev | xargs -I {} git -C {} pull
 }
