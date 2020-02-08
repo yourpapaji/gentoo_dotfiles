@@ -1,4 +1,5 @@
 nvim/.config/nvim/plugged/*
+nvim/.config/nvim/.netrwhist
 ncmpcpp/.config/ncmpcpp/error.log
 scripts/.local/bin/clipmenu
 scripts/.local/bin/clipmenud

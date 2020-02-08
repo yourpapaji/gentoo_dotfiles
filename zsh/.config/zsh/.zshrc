@@ -30,7 +30,7 @@ zstyle ':completion:*' rehash true  # automatically find new executables in path
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.cache
 zstyle ':completion:*' squeeze-slashes true
-autoload -U compinit colors zcalc
+autoload -U compinit
 compinit
 
 # Prompt
@@ -58,11 +58,14 @@ plugin_update() {
 	find $ZDOTDIR/plugins -maxdepth 3 -name .git -type d | rev | cut -c 6- | rev | xargs -I {} git -C {} pull
 }
 
-# alias
-alias q="exit"
+# aliases
+alias q='exit'
 alias df='df -Th'
 alias free='free -h'
 alias gitu='git add . && git commit && git push'
 alias ls='exa --color=always --group-directories-first'
 alias ll='exa -l --color=always --group-directories-first'
 alias la='exa -al --color=always --group-directories-first'
+alias zshrc='nvim $ZDOTDIR/.zshrc'
+alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
+alias portail='doas tail -f /var/log/emerge-fetch.log'
