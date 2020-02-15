@@ -1,3 +1,4 @@
+mpv/.config/mpv/scripts/*
 nvim/.config/nvim/plugged/*
 nvim/.config/nvim/.netrwhist
 ncmpcpp/.config/ncmpcpp/error.log

@@ -6,16 +6,22 @@ karman's configs
 
 
 
-### programs used:
+## programs used:
 
-##### to compile dwm and st -
+#### to compile dwm and st
 + libX11-devel
 + libXft-devel
 + libXinerama-devel
 
-##### everything else -
-+ setxkbmap
+#### for my dwm status bar (dwm with status2d patch)
 + xsetroot
++ pamixer
++ apcupsd (for my APC ups status)
++ nmcli
++ nvidia-smi (for gpu temperature)
+
+#### everything else
++ setxkbmap
 + xautolock
 + xset
 + xsel
@@ -24,7 +30,7 @@ karman's configs
 + geoclue2
 + sxhkd
 + numlockx
-+ clipmenu
++ clipmenud
 + unclutter
 + redshift
 + feh
@@ -33,7 +39,7 @@ karman's configs
 + ncmpcpp
 + dunst
 + tmux
-+ fish
++ zsh (add `ZDOTDIR="$HOME/.config/zsh"` to /etc/zsh/zshenv for cleaner setup)
 + dash
 + exa
 + gotop
@@ -43,22 +49,16 @@ karman's configs
 + nerd-fonts
 + networkmanager-dmenu
 + neovim (with [vim-plug](https://github.com/junegunn/vim-plug))
-+ jack2 (for music production and video editing)
++ jack2 (for music production)
 + cadence
-+ alsa
-+ pulseaudio
-+ pamixer
 + ranger
 + ueberzug
 + [j4-dmenu-desktop](https://github.com/enkore/j4-dmenu-desktop)
-+ weechat
-+ neomutt
-+ opendoas
++ irssi
++ opendoas (replacement for sudo)
 + pcmanfm
 + qt5ct
 
-****mpv and picom configurations are optimized for my nvidia graphics card.***
-
 uses [stow](https://www.gnu.org/software/stow/) for managing dotfiles.
 
-> usage: `stow asla bash dwm mpd (etc)`
+> usage: `stow asla zsh dwm mpd (etc)`

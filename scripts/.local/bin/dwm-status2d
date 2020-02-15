@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env dash
+# vim: ft=sh
 
 interval=1
 rxs=0
@@ -17,56 +18,49 @@ printf "%s" "$SEP1"
         printf "^c#b8bb26^🔊 %s%%^d^" "$VOL"
     fi
 }
-
-dwm_ups () {
-    CHARGE=$(apcaccess -p BCHARGE -u)
-    STATUS=$(apcaccess -p STATUS -u)
-    TIMELEFT=$(apcaccess -p TIMELEFT -u)
-
-    printf "%s" "$SEP1"
-    if [ "$IDENTIFIER" = "unicode" ]; then
-        if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
-        elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
-        else
-            printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
-        fi
+alsa() {
+VOL=$(amixer get -c 2 Headphone | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")
+printf "%s" "$SEP1"
+    if [ "$VOL" -eq 0 ]; then
+        printf "^c#cc241d^🔇^d^"
+    elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+        printf "^c#cc241d^🔈 %s%%^d^" "$VOL"
+    elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+        printf "^c#d79921^🔉 %s%%^d^" "$VOL"
     else
-        if [ "$STATUS" = "ONLINE " ]; then
-            printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
-        elif [ "$STATUS" = "ONBATT " ]; then
-            printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
-        else
-            printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
-        fi
+        printf "^c#b8bb26^🔊 %s%%^d^" "$VOL"
     fi
-    printf "%s\n" "$SEP2"
 }
+ups() {
+CHARGE=$(apcaccess -p BCHARGE -u)
+STATUS=$(apcaccess -p STATUS -u)
+TIMELEFT=$(apcaccess -p TIMELEFT -u)
 
-dwm_network () {
-    CONNAME=$(nmcli -a | grep 'Wired connection' | awk 'NR==1{print $1}')
-    if [ "$CONNAME" = "" ]; then
-        CONNAME=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -c 5-)
-    fi
-
-    PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
-    PUBLIC=$(curl -s https://ipinfo.io/ip)
-
-    printf "%s" "$SEP1"
-    if [ "$IDENTIFIER" = "unicode" ]; then
-    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+printf "%s" "$SEP1"
+    if [ "$STATUS" = "ONLINE " ]; then
+        printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+    elif [ "$STATUS" = "ONBATT " ]; then
+        printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
     else
-    printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
+        printf "🔋 %s%% %s %sMins" "$CHARGE" "$STATUS" "$TIMELEFT"
     fi
-    printf "%s\n" "$SEP2"
+}
+network() {
+CONNAME=$(nmcli -a | grep 'Wired connection' | awk 'NR==1{print $1}')
+if [ "$CONNAME" = "" ]; then
+    CONNAME=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -c 5-)
+fi
+PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
+PUBLIC=$(curl -s https://ipinfo.io/ip)
+
+printf "%s" "$SEP1"
+printf "🌐 %s (%s^c#928374^:^d^^c#fb4934^%s^d^)" "^c#d3869b^$CONNAME^d^" "$PRIVATE" "$PUBLIC"
 }
 
 # for weather
 LOCATION='Chandigarh'
 while true; do
     curl -s "https://wttr.in/${LOCATION}?format=1" > $HOME/.cache/Weather.tmp
-    #printf "nothing\n" > $HOME/.cache/Weather.tmp
     sleep 300
 done &
 
@@ -83,7 +77,7 @@ while true; do
     CPU_F=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
     CPU_FREQ=$(expr "$CPU_F" / 1000)
 
-    # GPU TEMP
+    # GPU
     GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
 
     # Weather
@@ -99,9 +93,8 @@ while true; do
     HOMEUSED=$(df -h | grep '/home$' | awk '{print $3}')
     HOMETOT=$(df -h | grep '/home$' | awk '{print $2}')
 
-
     # STATUS
-    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(dwm_network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(dwm_ups) ^c#928374^|^d^ $LOCALTIME "
+    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(alsa) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "
 
     rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
     tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)

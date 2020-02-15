@@ -1,40 +1,14 @@
-#!/bin/sh
-
-## Pulseaudio volume controls
-## Requires the following script for it to work:
-## https://github.com/Fabian-G/dotfiles/blob/master/scripts/bin/getProgressString
-
-self=$(dirname "$0")
-
-# Message ID
+#!/bin/bash
 msgId="991049"
+amixer -c 2 set Headphone "$@" > /dev/null
 
-# Change the volume or toggle mute
-case $1 in
-    inc)
-        pamixer -i 5 -u
-        ;;
-    dec)
-        pamixer -d 5 -u
-        ;;
-    mute)
-        pamixer -t
-        ;;
-    *)
-        echo ""
-esac
-
-volume="$(pamixer --get-volume)"
-mute="$(pamixer --get-mute)"
-
-if [ "$volume" = 0 ] || [ "$mute" = "true" ]; then
-    # mute
-    dunstify -a "changeVolume" -u low -i notification-audio-volume-muted -r "$msgId" "Volume muted"
+volume="$(amixer -c 2 get Headphone | tail -1 | awk '{print $5}' | sed 's/[^0-9]*//g')"
+mute="$(amixer -c 2 get Headphone | tail -1 | awk '{print $7}' | sed 's/[^a-z]*//g')"
+if [[ $volume == 0 || "$mute" == "off" ]]; then
+    dunstify -a "changeVolume" -u low -i audio-volume-muted -r "$msgId" "Volume muted"
 else
-    # volume notification
-    dunstify -a "changeVolume" -u low -i notification-audio-volume-high -r "$msgId" \
-        "Volume: ${volume}%" "$("$self"/getProgressString 10 "<b>◉ </b>" "○ " "$volume")"
+    dunstify -a "changeVolume" -u low -i audio-volume-high -r "$msgId" \
+    "Volume: ${volume}%" "$(getProgressString 10 " " " " $volume)"
 fi
 
-# Play sound
 canberra-gtk-play -i audio-volume-change -d "changeVolume"

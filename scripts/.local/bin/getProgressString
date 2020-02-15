@@ -1,6 +1,4 @@
-#!/bin/sh
-
-# Source: https://github.com/Fabian-G/dotfiles/blob/master/scripts/bin/getProgressString
+#!/bin/bash
 
 # getProgressString <TOTAL ITEMS> <FILLED LOOK> <NOT FILLED LOOK> <STATUS>
 # For instance:
@@ -9,7 +7,7 @@
 # Note: if you want to use | in your progress bar string you need to change the delimiter in the sed commands
 
 ITEMS="$1" # The total number of items(the width of the bar)
-FILLED_ITEM="$2" # The look of a filled item
+FILLED_ITEM="$2" # The look of a filled item 
 NOT_FILLED_ITEM="$3" # The look of a not filled item
 STATUS="$4" # The current progress status in percent
 

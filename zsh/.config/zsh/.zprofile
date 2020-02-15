@@ -3,7 +3,7 @@ export PAGER="less"
 export TERMINAL="st"
 export TERMCMD="st"
 export TERM="st"
-export BROWSER="firefox-bin"
+export BROWSER="firefox"
 export READER="zathura"
 export FILE="pcmanfm"
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -30,7 +30,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_MUSIC_DIR="$HOME/Music"
-export XDG_CURRENT_DESKTOP='dwm'
+export XDG_CURRENT_DESKTOP="dwm"
 
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx -- vt1 -br +bs -dpi 96

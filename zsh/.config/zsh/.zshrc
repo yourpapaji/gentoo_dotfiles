@@ -1,4 +1,8 @@
-## Options section
+HISTFILE=~/.cache/zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+
+# Options section
 setopt correct           # Auto correct mistakes
 setopt extendedglob      # Extended globbing. Allows using regular expressions with *
 setopt nocaseglob        # Case insensitive globbing
@@ -9,13 +13,8 @@ setopt appendhistory     # Immediately append history instead of overwriting
 setopt histignorealldups # If a new command is a duplicate, remove the older one
 setopt autocd            # if only directory path is entered, cd there.
 
-# environment
-export LANG=en_US.UTF-8
-HISTFILE=~/.cache/zsh_history
-HISTSIZE=3000
-SAVEHIST=3000
-
-## Keybindings section
+# Keybindings section
+bindkey -e
 bindkey '^[Oc' forward-word         #
 bindkey '^[Od' backward-word        #
 bindkey '^[[1;5D' backward-word     #
@@ -25,13 +24,16 @@ bindkey '^[[Z' undo                 # Shift+tab undo last action
 WORDCHARS=${WORDCHARS//\/[&.;]}
 
 # Completions
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"    # Colored completion
 zstyle ':completion:*' menu select
 zstyle ':completion:*' rehash true  # automatically find new executables in path
+zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.cache
 zstyle ':completion:*' squeeze-slashes true
 autoload -U compinit
-compinit
+compinit -d
 
 # Prompt
 PROMPT='%(?.%F{blue}√.%F{red}?%?)%f %B%F{green}%1~%f%b %# '
@@ -44,9 +46,8 @@ zstyle ':vcs_info:git:*' formats '%F{yellow}(%b)%r%f'
 zstyle ':vcs_info:*' enable git
 
 # Plugins
-source $ZDOTDIR/plugins/colorize/colorize.plugin.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374,underline"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374"
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $ZDOTDIR/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 zmodload zsh/terminfo
@@ -69,3 +70,5 @@ alias la='exa -al --color=always --group-directories-first'
 alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
 alias portail='doas tail -f /var/log/emerge-fetch.log'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -19,4 +19,3 @@ xset r rate 350 80 &
 xset dpms 600 900 1200 &
 sxhkd &
 numlockx on &
-dunst &

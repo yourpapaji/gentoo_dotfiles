@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Terminal
-{super,alt} + Return
-	{$TERMINAL -e tmux,kitty}
+super + Return
+	$TERMINAL -e tmux
 # Programs Menu
 super + p
 	j4-dmenu-desktop
@@ -69,7 +69,9 @@ XF86TaskPane
 XF86Mail
 	$TERMINAL -e neomutt
 XF86Audio{RaiseVolume,LowerVolume,Mute}
-	changeVolume {inc,dec,mute}
+	changeVolume {1db+,1db-,mute}
+super + XF86AudioMute
+	changeVolume unmute
 
 # Reload SXHKD
 super + Escape

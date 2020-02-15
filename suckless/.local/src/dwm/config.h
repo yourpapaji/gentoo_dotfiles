@@ -40,6 +40,7 @@ static const Rule rules[] = {
 	{ "Kvantum Manager",            NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Sxiv",                       NULL,     NULL,     0,          1,         1,         -1 },
 	{ "obs",                        NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Ghb",                        NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Zathura",                    NULL,     NULL,     0,          1,         1,         -1 },
 	{ "libreoffice-startcenter",    NULL,     NULL,     1 << 6,     1,         1,         -1 },
 	{ "Meld",                       NULL,     NULL,     0,          1,         1,         -1 },
