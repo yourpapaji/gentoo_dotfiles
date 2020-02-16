@@ -2,8 +2,6 @@ karman's configs
 =================
 ![screenshot](screenshots/desktop1.png)
 ![screenshot](screenshots/desktop2.png)
-![screenshot](screenshots/desktop3.png)
-
 
 
 ## programs used:
