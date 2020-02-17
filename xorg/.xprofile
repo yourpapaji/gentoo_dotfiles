@@ -20,7 +20,6 @@ export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
 export SXHKD_SHELL="/bin/sh"
 export STEAM_RUNTIME=1
-export MOZ_WEBRENDER=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
 export LESSHISTFILE="-"
