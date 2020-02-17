@@ -13,7 +13,6 @@ karman's configs
 
 #### for my dwm status bar (dwm with status2d patch)
 + xsetroot
-+ pamixer
 + apcupsd (for my APC ups status)
 + nmcli
 + nvidia-smi (for gpu temperature)
