@@ -13,7 +13,7 @@ include                     "themes/gruvbox-dark"
 # Rest of your configs go here:
 
 # Status bar
-set font                    "JetBrains Mono 10"
+set font                    "JetBrainsMono Nerd Font 9"
 set statusbar-basename      "true"
 set statusbar-home-tilde    "true"
 
