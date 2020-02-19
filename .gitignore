@@ -11,6 +11,7 @@ scripts/.local/bin/pylint
 scripts/.local/bin/pyreverse
 scripts/.local/bin/symilar
 scripts/.local/bin/ueberzug
+scripts/.local/bin/protonvpn
 scripts/.local/bin/yapf
 scripts/.local/bin/tor-prompt
 zsh/.config/zsh/plugins/*
