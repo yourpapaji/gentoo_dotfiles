@@ -29,6 +29,7 @@ export TERMINFO="$HOME/.local/share/terminfo"
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
 export CCACHE_CONFIGPATH="$HOME/.config/ccache.config"
 export CCACHE_DIR="$HOME/.cache/ccache"
+export GPG_TTY=$(tty)
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
