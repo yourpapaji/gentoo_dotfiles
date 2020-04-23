@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# We will use ffmpeg as our screencapture tool because it's installed by default on all my machines
+# If ffmpeg isn't available, we can use imagemagick's `import` instead
+
+path="$HOME/Pictures/screenshots/"
+file="screenshot_$(date +%F_%R:%S:%N).png"
+
+[[ ! -d "$path" ]] && mkdir -p "$path"
+
+read -r X Y W H G < <(slop -f "%x %y %w %h %g %i" -n 1 -p -1 -l -c .2578125,.09375,.46875,.5)
+which ffmpeg && {
+    ffmpeg -f x11grab -draw_mouse 0 -s "$W"x"$H" -i $DISPLAY+$X,$Y -frames 1 "$path$file"
+}|| import -window root -crop $G "$path$file"
+[[ $? -eq 0 ]] && notify-send "Screenshot saved:" "$file" || exit 1

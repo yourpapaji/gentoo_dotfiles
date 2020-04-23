@@ -11,4 +11,4 @@ else
     "Volume: ${volume}%" "$(getProgressString 10 " " " " $volume)"
 fi
 
-canberra-gtk-play -i audio-volume-change -d "changeVolume"
+apulse canberra-gtk-play -i audio-volume-change -d "changeVolume"

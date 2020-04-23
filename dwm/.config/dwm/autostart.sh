@@ -19,3 +19,4 @@ run dwm-status2d
 run mpd --no-daemon
 run pcmanfm --no-desktop --daemon-mode
 run cadence
+run dunst

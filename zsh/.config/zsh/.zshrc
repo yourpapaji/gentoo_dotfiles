@@ -23,6 +23,18 @@ bindkey '^H' backward-kill-word     # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo                 # Shift+tab undo last action
 WORDCHARS=${WORDCHARS//\/[&.;]}
 
+# aliases
+alias q='exit'
+alias df='df -Th'
+alias free='free -h'
+alias gitu='git add . && git commit && git push'
+alias ls='exa --color=always --group-directories-first'
+alias ll='exa -l --color=always --group-directories-first'
+alias la='exa -al --color=always --group-directories-first'
+alias zshrc='nvim $ZDOTDIR/.zshrc'
+alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
+alias portail='doas tail -f /var/log/emerge-fetch.log'
+
 # Completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"    # Colored completion
@@ -46,10 +58,10 @@ zstyle ':vcs_info:git:*' formats '%F{yellow}(%b)%r%f'
 zstyle ':vcs_info:*' enable git
 
 # Plugins
-source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374"
-source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-source $ZDOTDIR/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
+source $ZDOTDIR/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
@@ -58,17 +70,5 @@ bindkey '^[[B' history-substring-search-down
 plugin_update() {
 	find $ZDOTDIR/plugins -maxdepth 3 -name .git -type d | rev | cut -c 6- | rev | xargs -I {} git -C {} pull
 }
-
-# aliases
-alias q='exit'
-alias df='df -Th'
-alias free='free -h'
-alias gitu='git add . && git commit && git push'
-alias ls='exa --color=always --group-directories-first'
-alias ll='exa -l --color=always --group-directories-first'
-alias la='exa -al --color=always --group-directories-first'
-alias zshrc='nvim $ZDOTDIR/.zshrc'
-alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
-alias portail='doas tail -f /var/log/emerge-fetch.log'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

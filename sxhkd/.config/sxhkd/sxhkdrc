@@ -32,7 +32,7 @@ super + ctrl + {p,g}
 	$TERMINAL -t float -g=120x40 -e {htop,gotop}
 # Music
 super + ctrl + m
-	$TERMINAL -t float -g=90x38 -e ncmpcpp
+	$TERMINAL -t float -g=92x24 -e ncmpcpp
 # IRC Chat
 super + ctrl + i
 	$TERMINAL -t float -e weechat

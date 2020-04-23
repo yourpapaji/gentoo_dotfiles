@@ -39,6 +39,8 @@ TIMELEFT=$(apcaccess -p TIMELEFT -u)
 printf "%s" "$SEP1"
     if [ "$STATUS" = "ONLINE " ]; then
         printf "^c#b8bb26^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
+    elif [ "$STATUS" = "TRIM ONLINE " ]; then
+        printf "^c#d79921^🔌 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
     elif [ "$STATUS" = "ONBATT " ]; then
         printf "^c#cc241d^🔋 %s%% %s%sMin^d^" "$CHARGE" "$STATUS" "$TIMELEFT"
     else
