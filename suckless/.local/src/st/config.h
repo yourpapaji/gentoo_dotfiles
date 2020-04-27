@@ -5,7 +5,10 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
+/*
 static char *font = "JetBrainsMono Nerd Font:pixelsize=14:antialias=true:autohint=false";
+*/
+static char *font = "Hack Nerd Font:pixelsize=14:antialias=true:autohint=false";
 static int borderpx = 10;
 
 /*

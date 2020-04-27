@@ -10,7 +10,7 @@ static const unsigned int gappov    = 12;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Medium:size=9" };
+static const char *fonts[]          = { "Hack Nerd Font:style=Regular:size=9" };
 static const char col_gray1[]       = "#1d2021";
 static const char col_gray2[]       = "#458588";
 static const char col_gray3[]       = "#928374";
@@ -51,6 +51,8 @@ static const Rule rules[] = {
 	{ "Steam",                      NULL,     NULL,     1 << 4,     1,         1,         -1 },
 	{ "steam_app_306130",           NULL,     NULL,     1 << 4,     1,         1,         -1 },
 	{ "bethesda.net_launcher.exe",  NULL,     NULL,     1 << 4,     1,         1,         -1 },
+	{ "steam_app_306130",           NULL,     "Launcher",1 << 4,    1,         1,         -1 },
+	{ "bethesda.net_launcher.exe",  NULL,     "Launcher",1 << 4,    1,         1,         -1 },
 	{ "Pavucontrol",                NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Cadence",                    NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Gnome-disks",                NULL,     NULL,     0,          1,         1,         -1 },
@@ -70,8 +72,8 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ " ",      tile },    /* first entry is default */
+	{ " ",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 

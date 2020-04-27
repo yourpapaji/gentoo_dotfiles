@@ -85,7 +85,7 @@
 
     ### Text ###
 
-    font = JetBrainsMono Nerd Font Medium 9
+    font = Hack Nerd Font 9
 
 
     # The spacing between lines.  If the height is smaller than the
