@@ -96,7 +96,7 @@ while true; do
     HOMETOT=$(df -h | grep '/home$' | awk '{print $2}')
 
     # STATUS
-    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(alsa) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "
+    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "
 
     rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
     tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)

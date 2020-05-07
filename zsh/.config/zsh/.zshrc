@@ -2,6 +2,10 @@ HISTFILE=~/.cache/zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
 
+# Setup for gpg-agent workaround
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # Options section
 setopt correct           # Auto correct mistakes
 setopt extendedglob      # Extended globbing. Allows using regular expressions with *
@@ -33,7 +37,7 @@ alias ll='exa -l --color=always --group-directories-first'
 alias la='exa -al --color=always --group-directories-first'
 alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
-alias portail='doas tail -f /var/log/emerge-fetch.log'
+alias portail='sudo tail -f /var/log/emerge-fetch.log'
 
 # Completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion

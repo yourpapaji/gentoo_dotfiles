@@ -69,9 +69,7 @@ XF86TaskPane
 XF86Mail
 	$TERMINAL -e neomutt
 XF86Audio{RaiseVolume,LowerVolume,Mute}
-	changeVolume {1db+,1db-,mute}
-super + XF86AudioMute
-	changeVolume unmute
+	changeVolume_pulse {inc,dec,mute}
 
 # Reload SXHKD
 super + Escape

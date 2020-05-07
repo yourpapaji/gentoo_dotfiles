@@ -28,6 +28,11 @@
 *color7:  #a89984
 *color15: #ebdbb2
 
+! Sxiv settings
+Sxiv.background: #1d2021
+Sxiv.foreground: #458588
+Sxiv.font: xos4 Terminess Powerline-9;
+
 ! Xft settings
 Xft.dpi: 96
 Xft.antialias: 1

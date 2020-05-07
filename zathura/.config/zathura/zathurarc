@@ -13,7 +13,7 @@ include                     "themes/gruvbox-dark"
 # Rest of your configs go here:
 
 # Status bar
-set font                    "JetBrainsMono Nerd Font 9"
+set font                    "xos4 Terminus 9"
 set statusbar-basename      "true"
 set statusbar-home-tilde    "true"
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 
 case "$(printf "reboot\\npoweroff\\nhibernate\\nsuspend" | dmenu -i -p "Choose:")" in
-	"reboot") doas openrc-shutdown --no-write --reboot now;;
-	"poweroff") doas openrc-shutdown --no-write --poweroff now;;
-	"hibernate") doas hibernate;;
-	"suspend") doas hibernate-ram;;
+	"reboot") systemctl reboot -i;;
+	"poweroff") systemctl poweroff;;
+	"hibernate") systemctl hibernate;;
+	"suspend") systemctl sleep;;
 esac
