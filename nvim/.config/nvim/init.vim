@@ -58,6 +58,10 @@ set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
 set hidden
 set shortmess=aFc
 
+let g:python_host_prog = '/usr/bin/python2'
+let g:loaded_python_provider = 0
+let g:python3_host_prog = '/usr/bin/python3.7'
+
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'

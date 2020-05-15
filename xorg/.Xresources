@@ -35,11 +35,11 @@ Sxiv.font: xos4 Terminess Powerline-9;
 
 ! st settings
 st.font:		JetBrains Mono-10
-st.borderpx:		2
-st.cursorColor:		#458588
+st.borderpx:		8
+st.termname:		st-256color
 st.xfps:		144
 st.actionfps:		60
-st.cwscale:		1.0
+st.cwscale:		0.9
 st.chscale:		0.9
 
 ! Xft settings

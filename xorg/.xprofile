@@ -6,6 +6,7 @@
 [ -d /usr/sbin ] && PATH="$PATH:/usr/sbin"
 
 export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+export GOPATH="$HOME/.local"
 export PAGER="less"
 export TERMINAL="st"
 export TERMCMD="${TERMINAL}"
@@ -13,7 +14,8 @@ export TERM="${TERMINAL}"
 export BROWSER="chromium"
 export READER="zathura"
 export FILE="pcmanfm"
-export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_PLATFORM_PLUGIN=lxqt
+export QT_QPA_PLATFORMTHEME=lxqt
 export GTK_THEME_VARIANT="dark"
 export LANG="en_US.UTF8"
 export LC_ALL="en_US.UTF-8"
@@ -45,8 +47,7 @@ export SSH_AUTH_SOCK
 setxkbmap -layout us &
 xsetroot -cursor_name left_ptr &
 xautolock -time 10 -locker slock_time &
-xset r rate 350 80 &
-xset dpms 600 900 1200 &
+#xset r rate 350 80 &
+#xset dpms 600 900 1200 &
 sxhkd &
-numlockx on &
-xfsettingsd &
+#numlockx on &

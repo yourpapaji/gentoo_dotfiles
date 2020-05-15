@@ -10,19 +10,23 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Terminus(TTF):size=9", "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true", "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true" };
-static const char col_gray1[]       = "#1d2021";
-static const char col_gray2[]       = "#458588";
-static const char col_gray3[]       = "#928374";
-static const char col_gray4[]       = "#1d2021";
-static const char col_cyan[]        = "#458588";
-static const char col_font[]        = "#ebdbb2";
-static const char col_orange[]      = "#d79921";
+static const char *fonts[]          = { "Terminus(TTF):size=9", "Noto Color Emoji:size=9", "Hack Nerd Font:size=9" };
+static const char col_gray1[]       = "#222222";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#005577";
+static const unsigned int baralpha = 255;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_font, col_gray1, col_gray3 },
-	[SchemeSel]  = { col_gray4, col_orange,  col_cyan  },
-	[SchemeTitle]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+};
+static const unsigned int alphas[][3]      = {
+	/*               fg      bg        border     */
+	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
@@ -33,16 +37,19 @@ static const Rule rules[] = {
 	{ NULL,                         NULL,     NULL,     0,          1,         0,         -1 },
 	{ "Gimp",                       NULL,     NULL,     1 << 6,     1,         1,         -1 },
 	{ "mpv",                        NULL,     NULL,     0,          1,         1,         -1 },
-	{ "pcmanfm-qt",                 NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Pcmanfm",                    NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Xarchiver",                  NULL,     NULL,     0,          1,         1,         -1 },
-	{ "lxqt-config",                NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Lxappearance",               NULL,     NULL,     0,          1,         1,         -1 },
+	{ "qt5ct",                      NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Kvantum Manager",            NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Sxiv",                       NULL,     NULL,     0,          1,         1,         -1 },
 	{ "obs",                        NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Ghb",                        NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Zathura",                    NULL,     NULL,     0,          1,         1,         -1 },
 	{ "libreoffice-startcenter",    NULL,     NULL,     1 << 6,     1,         1,         -1 },
 	{ "Meld",                       NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Filezilla",                  NULL,     NULL,     1 << 7,     1,         1,         -1 },
-	{ "qBittorrent",                NULL,     NULL,     1 << 7,     1,         1,         -1 },
+	{ "Transmission-gtk",           NULL,     NULL,     1 << 7,     1,         1,         -1 },
 	{ "discord",                    NULL,     NULL,     1 << 3,     1,         1,         -1 },
 	{ "Lutris",                     NULL,     NULL,     1 << 4,     1,         1,         -1 },
 	{ "Steam",                      NULL,     NULL,     1 << 4,     1,         1,         -1 },
@@ -51,9 +58,15 @@ static const Rule rules[] = {
 	{ "steam_app_306130",           NULL,     "Launcher",1 << 4,    1,         1,         -1 },
 	{ "bethesda.net_launcher.exe",  NULL,     "Launcher",1 << 4,    1,         1,         -1 },
 	{ "Pavucontrol",                NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Cadence",                    NULL,     NULL,     0,          1,         1,         -1 },
+	{ "Gnome-disks",                NULL,     NULL,     0,          1,         1,         -1 },
 	{ "Nvidia-settings",            NULL,     NULL,     0,          1,         1,         -1 },
 	{ "VirtualBox Manager",         NULL,     NULL,     1 << 6,     1,         1,         -1 },
-	{ "St",                         NULL,     "float",  0,          1,         1,         -1 },
+	{ "st-256color",                NULL,     "float",  0,          1,         1,         -1 },
+	{ "Nightly",            	NULL,     NULL,     1 << 1,     1,         0,         -1 },
+	{ "Nightly",            	NULL,     "Library",1,          1,         1,         -1 },
+	{ "Nightly",            	NULL,	  "About Nightly",0,    1,         1,         -1 },
+	{ "Brave-browser",		NULL,	  NULL,     1 << 8,     1,         0,         -1 },
 };
 
 /* layout(s) */
@@ -84,14 +97,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 #include "movestack.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ ALTKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },

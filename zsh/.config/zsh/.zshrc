@@ -35,7 +35,7 @@ alias free='free -h'
 alias gitu='git add . && git commit && git push'
 alias ls='exa --color=always --group-directories-first'
 alias ll='exa -l --color=always --group-directories-first'
-alias la='exa -al --color=always --group-directories-first'
+alias la='exa -al --color=always --group-directories-first --git'
 alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
 alias portail='sudo tail -f /var/log/emerge-fetch.log'
@@ -53,7 +53,7 @@ autoload -U compinit
 compinit -d
 
 # Prompt
-PROMPT='%(?.%F{blue}√.%F{red}?%?)%f %B%F{green}%1~%f%b %# '
+PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%F{240}%1~%f%b %# '
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
@@ -75,5 +75,17 @@ bindkey '^[[B' history-substring-search-down
 plugin_update() {
 	find $ZDOTDIR/plugins -maxdepth 3 -name .git -type d | rev | cut -c 6- | rev | xargs -I {} git -C {} pull
 }
+
+# prompt cursor fix when exiting vim
+local cursor="\e[3 q"
+if [ "$TYPEWRITTEN_CURSOR" = "block" ]; then
+  cursor="\e[1 q"
+elif [ "$TYPEWRITTEN_CURSOR" = "beam" ]; then
+  cursor="\e[5 q"
+fi
+_fix_cursor() {
+  echo -ne "${cursor}"
+}
+precmd_functions+=(_fix_cursor)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

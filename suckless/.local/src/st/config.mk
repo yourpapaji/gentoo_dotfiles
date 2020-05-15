@@ -1,5 +1,5 @@
 # st version
-VERSION = 0.8.3
+VERSION = 0.8.3-coffee
 
 # Customize below to fit your system
 
