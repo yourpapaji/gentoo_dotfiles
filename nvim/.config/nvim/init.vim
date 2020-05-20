@@ -6,7 +6,7 @@ syntax on
 set encoding=utf8
 set clipboard=unnamed
 set clipboard^=unnamed,unnamedplus
-set shell=/bin/bash
+set shell=/bin/sh
 set mouse=a
 set undofile
 set undodir=~/.cache/nvim/undo
@@ -58,8 +58,6 @@ set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
 set hidden
 set shortmess=aFc
 
-let g:python_host_prog = '/usr/bin/python2'
-let g:loaded_python_provider = 0
 let g:python3_host_prog = '/usr/bin/python3.7'
 
 " Specify a directory for plugins
@@ -78,8 +76,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Completions
-Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
+Plug 'davidhalter/jedi-vim'
+" quote and bracket completion
+Plug 'jiangmiao/auto-pairs'
 " Track the engine.
 Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
@@ -94,18 +95,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
 Plug 'morhetz/gruvbox'
-Plug 'itchyny/lightline.vim'
-Plug 'ryanoasis/vim-devicons'
-Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
 Plug 'Yggdroot/indentLine'
-Plug 'shougo/neocomplete.vim'
 Plug 'sbdchd/neoformat' " :NeoFormat
-Plug 'majutsushi/tagbar'
-Plug 'godlygeek/tabular'
-Plug 'junegunn/goyo.vim'
-Plug 'lilydjwg/colorizer'
-Plug 'tpope/vim-commentary'
+Plug 'neomake/neomake'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown', 'do': { -> mkdp#util#install() } }
 
 " Initialize plugin system
@@ -118,7 +113,6 @@ call plug#end()
 set cursorline
 
 " Powerline
-let g:rehash256 = 1
 let g:Powerline_symbols='unicode'
 let g:Powerline_theme='long'
 
@@ -135,58 +129,25 @@ let g:gruvbox_italicize_comments=1
 let g:gruvbox_italicize_strings=0
 colorscheme gruvbox
 
-" Lightline
-set noshowmode
-let g:lightline = {
-			\   'colorscheme': 'gruvbox',
-			\   'active': {
-			\     'left':[ [ 'mode', 'paste' ],
-			\              [ 'readonly', 'filename', 'modified' ]
-			\     ]
-			\   },
-			\   'component': {
-			\     'lineinfo': ' %3l:%-2v',
-			\   },
-			\   'component_function': {
-			\     'gitbranch': 'fugitive#head',
-			\   }
-			\ }
-let g:lightline.component_expand = {
-			\  'linter_checking': 'lightline#ale#checking',
-			\  'linter_warnings': 'lightline#ale#warnings',
-			\  'linter_errors': 'lightline#ale#errors',
-			\  'linter_ok': 'lightline#ale#ok',
-			\ }
-let g:lightline.component_type = {
-			\     'linter_checking': 'left',
-			\     'linter_warnings': 'warning',
-			\     'linter_errors': 'error',
-			\     'linter_ok': 'left',
-			\ }
-let g:lightline#ale#indicator_checking = "\uf110 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c "
-let g:lightline.tabline = {
-			\   'left': [ ['tabs'] ],
-			\   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok', 'gitbranch', 'coc_status' ] ]
-			\ }
-set guioptions-=e  " Don't use GUI tabline
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline_powerline_fonts = 1
 
 " IndentLine
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enabled = 1
 
-" CoC
-" if hidden is not set, TextEdit might fail.
-set hidden
-let g:coc_global_extensions = [
-			\'coc-html',
-			\'coc-python',
-			\'coc-phpls',
-			\'coc-emmet',
-			\'coc-css'
-			\]
+" deoplete
+let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" jedi-vim
+" disable autocompletion, cause we use deoplete for completion
+let g:jedi#completions_enabled = 0
+" open the go-to function in split, not another buffer
+let g:jedi#use_splits_not_buffers = "right"
 
 " Some servers have issues with backup files, see #649
 set nobackup
@@ -202,6 +163,9 @@ let g:neoformat_basic_format_trim = 1
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_verbose = 1 " only affects the verbosity of Neoformat
 
+" Neomake
+let g:neomake_python_enabled_makers = ['pylint']
+
 " NERDTree
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
@@ -215,16 +179,16 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 " NERDTree git plugin
 let g:NERDTreeIndicatorMapCustom = {
-			\ "Modified"  : "✹",
-			\ "Staged"    : "✚",
-			\ "Untracked" : "✭",
-			\ "Renamed"   : "➜",
+			\ "Modified"  : "☀",
+			\ "Staged"    : "➕",
+			\ "Untracked" : "⭐",
+			\ "Renamed"   : "👉",
 			\ "Unmerged"  : "═",
 			\ "Deleted"   : "✖",
 			\ "Dirty"     : "✗",
 			\ "Clean"     : "✔︎",
 			\ 'Ignored'   : '☒',
-			\ "Unknown"   : "?"
+			\ "Unknown"   : "❓"
 			\ }
 
 "NERDTree Syntax Highlighting Extension

@@ -12,10 +12,10 @@ msgId="991049"
 # Change the volume or toggle mute
 case $1 in
     inc)
-        pamixer -i 5 -u
+        pamixer --allow-boost -i 5 -u
         ;;
     dec)
-        pamixer -d 5 -u
+        pamixer --allow-boost -d 5 -u
         ;;
     mute)
         pamixer -t

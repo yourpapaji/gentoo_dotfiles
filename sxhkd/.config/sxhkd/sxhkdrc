@@ -7,8 +7,8 @@ super + Return
 super + p
 	j4-dmenu-desktop
 # WebBrowser
-super + w
-	$BROWSER
+#super + w
+#	$BROWSER
 # Exit Menu
 super + x
 	dmenu_exit

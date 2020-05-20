@@ -1,0 +1,105 @@
+From 18fc7793b0bb2f9a93d39fe69a72d40122e151eb Mon Sep 17 00:00:00 2001
+From: "Avi Halachmi (:avih)" <avihpit@yahoo.com>
+Date: Mon, 15 Oct 2018 01:06:01 +0300
+Subject: [PATCH] add visual bell with few rendering modes
+
+- Inverse the whole terminal - "standard" visual-bell, a bit jarring.
+- Inverse outer (border) cells - much less jarring, yet plenty visible.
+- Inverse the bottom-right corner only.
+- Inverse cells according to custom logic.
+---
+ config.def.h |  8 ++++++++
+ x.c          | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index fdbacfd..fe07204 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -69,6 +69,14 @@ static unsigned int cursorthickness = 2;
+  */
+ static int bellvolume = 0;
+ 
++/* visual-bell timeout in ms (0 to disable visual-bell) */
++static int vbelltimeout = 150;
++
++/* choose predefined visual-bell cells to inverse, or define your own logic */
++#define VBCELL x==0 || x==right || y==0 || y==bottom  /* border */
++// #define VBCELL 1  /* all cells - whole screen */
++// #define VBCELL y==bottom && x>right-2  /* bottom-right */
++
+ /* default TERM value */
+ char *termname = "st-256color";
+ 
+diff --git a/x.c b/x.c
+index 1dc44d6..44d5a8d 100644
+--- a/x.c
++++ b/x.c
+@@ -1592,6 +1592,27 @@ xsettitle(char *p)
+ 	XFree(prop.value);
+ }
+ 
++
++static int vbellset = 0; /* 1 during visual bell, 0 otherwise */
++static struct timespec lastvbell = {0};
++
++static int
++isvbellcell(int x, int y)
++{
++	int right = win.tw / win.cw - 1, bottom = win.th / win.ch - 1;
++	return VBCELL;  /* logic condition defined at config.h */
++}
++
++static void
++vbellbegin() {
++	clock_gettime(CLOCK_MONOTONIC, &lastvbell);
++	if (vbellset)
++		return;
++	vbellset = 1;
++	redraw();
++	XFlush(xw.dpy);
++}
++
+ int
+ xstartdraw(void)
+ {
+@@ -1613,6 +1634,8 @@ xdrawline(Line line, int x1, int y1, int x2)
+ 			continue;
+ 		if (selected(x, y1))
+ 			new.mode ^= ATTR_REVERSE;
++		if (vbellset && isvbellcell(x, y1))
++			new.mode ^= ATTR_REVERSE;
+ 		if (i > 0 && ATTRCMP(base, new)) {
+ 			xdrawglyphfontspecs(specs, base, i, ox, y1);
+ 			specs += i;
+@@ -1714,6 +1737,8 @@ xbell(void)
+ 		xseturgency(1);
+ 	if (bellvolume)
+ 		XkbBell(xw.dpy, xw.win, bellvolume, (Atom)NULL);
++	if (vbelltimeout)
++		vbellbegin();
+ }
+ 
+ void
+@@ -1959,6 +1984,16 @@ run(void)
+ 			}
+ 		}
+ 
++		if (vbellset) {
++			double remain = vbelltimeout - TIMEDIFF(now, lastvbell);
++			if (remain <= 0) {
++				vbellset = 0;
++				redraw();
++			} else if (timeout < 0 || remain < timeout) {
++				timeout = remain;
++			}
++		}
++
+ 		draw();
+ 		XFlush(xw.dpy);
+ 		drawing = 0;
+
+base-commit: 045a0fab4f80b57f4a982ae6bc5f33fe21d66111
+-- 
+2.17.1
+

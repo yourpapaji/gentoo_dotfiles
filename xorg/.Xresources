@@ -4,7 +4,7 @@
 *background: #1d2021
 *foreground: #ebdbb2
 ! Black + DarkGrey
-*color0:  #1d2021
+*color0:  #141616
 *color8:  #928374
 ! DarkRed + Red
 *color1:  #cc241d
@@ -37,10 +37,9 @@ Sxiv.font: xos4 Terminess Powerline-9;
 st.font:		JetBrains Mono-10
 st.borderpx:		8
 st.termname:		st-256color
-st.xfps:		144
-st.actionfps:		60
 st.cwscale:		0.9
 st.chscale:		0.9
+st.alpha:		0.94
 
 ! Xft settings
 Xft.dpi: 96

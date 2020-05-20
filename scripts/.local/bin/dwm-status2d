@@ -14,8 +14,10 @@ printf "%s" "$SEP1"
         printf "^c#cc241d^🔈 %s%%^d^" "$VOL"
     elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
         printf "^c#d79921^🔉 %s%%^d^" "$VOL"
-    else
+    elif [ "$VOL" -gt 66 ] && [ "$VOL" -le 100 ]; then
         printf "^c#b8bb26^🔊 %s%%^d^" "$VOL"
+    else
+        printf "^c#cc241d^🔊 %s%%^d^" "$VOL"
     fi
 }
 alsa() {
@@ -96,7 +98,7 @@ while true; do
     HOMETOT=$(df -h | grep '/home$' | awk '{print $2}')
 
     # STATUS
-    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ 🏠: ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^🖥 ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "
+    xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "
 
     rx1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
     tx1=$(cat /sys/class/net/$interface/statistics/tx_bytes)

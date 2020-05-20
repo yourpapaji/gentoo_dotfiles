@@ -25,6 +25,7 @@ export VISUAL=/usr/bin/nvim
 export SXHKD_SHELL="/bin/dash"
 export STEAM_RUNTIME=1
 export _JAVA_AWT_WM_NONREPARENTING=1
+export WM=LG3D
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
 export LESSHISTFILE="-"
 export WGETRC="$HOME/.config/wget/wgetrc"
@@ -47,7 +48,4 @@ export SSH_AUTH_SOCK
 setxkbmap -layout us &
 xsetroot -cursor_name left_ptr &
 xautolock -time 10 -locker slock_time &
-#xset r rate 350 80 &
-#xset dpms 600 900 1200 &
 sxhkd &
-#numlockx on &

@@ -10,7 +10,7 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Terminus(TTF):size=9", "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true", "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]          = { "Terminus(TTF):size=9", "Twitter Color Emoji:pixelsize=11:antialias=true:autohint=true", "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true" };
 static const char col_gray1[]       = "#1d2021";
 static const char col_gray2[]       = "#458588";
 static const char col_gray3[]       = "#928374";
@@ -89,6 +89,8 @@ static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 #include "movestack.c"
+#include "selfrestart.c"
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ ALTKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -141,6 +143,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+	{ MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 

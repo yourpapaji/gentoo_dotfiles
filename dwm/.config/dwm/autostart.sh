@@ -10,6 +10,7 @@ run() {
 run /usr/libexec/geoclue-2.0/demos/agent
 #run /usr/libexec/polkit-gnome-authentication-agent-1
 #run aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
+run redshift
 run clipmenud
 run unclutter --timeout 2
 run fehbg-random

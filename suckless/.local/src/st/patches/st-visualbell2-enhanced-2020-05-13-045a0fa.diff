@@ -1,0 +1,93 @@
+From d6a060dfeeef28548e6c6b1fcb92c73c4884cd6c Mon Sep 17 00:00:00 2001
+From: "Avi Halachmi (:avih)" <avihpit@yahoo.com>
+Date: Tue, 12 May 2020 11:40:19 +0300
+Subject: [PATCH] visual bell: add circle rendering mode
+
+This commit experiments with alternative rendering of visual bell,
+and as such it's extensively/excessively configurable.
+
+It renders an overlay of a circle with configurable colors (base,
+outline), position and size. Defaults to the center of the window.
+
+Size can be relative to window or chars width, and allows for instance
+to place it at the middle/side of a top/bottom tmux status-bar with
+exact char height to make it look like a flashing LED at the bar, etc.
+---
+ config.def.h | 11 +++++++++++
+ x.c          | 21 ++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index fe07204..927dfea 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -77,6 +77,17 @@ static int vbelltimeout = 150;
+ // #define VBCELL 1  /* all cells - whole screen */
+ // #define VBCELL y==bottom && x>right-2  /* bottom-right */
+ 
++static int vbellmode = 1;
++/* vbellmode: 0: invert cells. 1: draw a circle with these parameters:
++ * - base and outline colors (colorname index - see below)
++ * - radius: relative to window width, or if negative: relative to cell-width
++ * - position: relative to window width/height (0 and 1 are at the edges) */
++static int vbellcolor = 3;
++static int vbellcolor_outline = 1;
++static float vbellradius = 0.03;
++static float vbellx = 0.5;
++static float vbelly = 0.5;
++
+ /* default TERM value */
+ char *termname = "st-256color";
+ 
+diff --git a/x.c b/x.c
+index 44d5a8d..189aa1c 100644
+--- a/x.c
++++ b/x.c
+@@ -1600,7 +1600,7 @@ static int
+ isvbellcell(int x, int y)
+ {
+ 	int right = win.tw / win.cw - 1, bottom = win.th / win.ch - 1;
+-	return VBCELL;  /* logic condition defined at config.h */
++	return vbellmode == 0 && (VBCELL);  /* logic defined at config.h */
+ }
+ 
+ static void
+@@ -1613,6 +1613,22 @@ vbellbegin() {
+ 	XFlush(xw.dpy);
+ }
+ 
++static void
++xfillcircle(int x, int y, int r, uint color_ix)
++{
++	XSetForeground(xw.dpy, dc.gc, dc.col[color_ix].pixel);
++	XFillArc(xw.dpy, xw.buf, dc.gc, x - r, y - r, r * 2, r * 2, 0, 360*64);
++}
++
++static void
++xdrawvbell() {
++	int r = round(vbellradius * (vbellradius > 0 ? win.w : -win.cw));
++	int x = borderpx + r + vbellx * (win.tw - 2 * r);
++	int y = borderpx + r + vbelly * (win.th - 2 * r);
++	xfillcircle(x, y, r, vbellcolor_outline);
++	xfillcircle(x, y, r / 1.2, vbellcolor); /* 1.2 - an artistic choice */
++}
++
+ int
+ xstartdraw(void)
+ {
+@@ -1655,6 +1671,9 @@ xdrawline(Line line, int x1, int y1, int x2)
+ void
+ xfinishdraw(void)
+ {
++	if (vbellset && vbellmode == 1)
++		xdrawvbell();
++
+ 	XCopyArea(xw.dpy, xw.buf, xw.win, dc.gc, 0, 0, win.w,
+ 			win.h, 0, 0);
+ 	XSetForeground(xw.dpy, dc.gc,
+
+base-commit: 045a0fab4f80b57f4a982ae6bc5f33fe21d66111
+prerequisite-patch-id: d5f30ab22e0caa901341e31c40606787c3921821
+-- 
+2.17.1
+

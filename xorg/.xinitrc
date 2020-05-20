@@ -13,4 +13,5 @@ fi
 [ -r $HOME/.xprofile ] && . $HOME/.xprofile
 
 # session
-exec startdwm
+#exec dbus-launch --exit-with-session startdwm
+exec dbus-launch --exit-with-session startlxqt

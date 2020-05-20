@@ -63,6 +63,9 @@ zstyle ':vcs_info:git:*' formats '%F{yellow}(%b)%r%f'
 zstyle ':vcs_info:*' enable git
 
 # Plugins
+source $ZDOTDIR/plugins/zsh-histdb/sqlite-history.zsh
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd histdb-update-outcome
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374"
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
@@ -77,7 +80,7 @@ plugin_update() {
 }
 
 # prompt cursor fix when exiting vim
-local cursor="\e[3 q"
+local cursor="\x1b[\x33 q"
 if [ "$TYPEWRITTEN_CURSOR" = "block" ]; then
   cursor="\e[1 q"
 elif [ "$TYPEWRITTEN_CURSOR" = "beam" ]; then
