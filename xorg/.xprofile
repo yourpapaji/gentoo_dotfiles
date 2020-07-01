@@ -8,12 +8,12 @@
 export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
 export GOPATH="$HOME/.local"
 export PAGER="less"
-export TERMINAL="st"
-export TERMCMD="${TERMINAL}"
-export TERM="${TERMINAL}"
-export BROWSER="chromium"
+export TERM="/usr/local/bin/st"
+export TERMINAL="${TERM}"
+export TERMCMD="${TERM}"
+export BROWSER="brave-bin"
 export READER="zathura"
-export FILE="pcmanfm"
+export FILE="pcmanfm-qt"
 export QT_PLATFORM_PLUGIN=lxqt
 export QT_QPA_PLATFORMTHEME=lxqt
 export GTK_THEME_VARIANT="dark"
@@ -25,18 +25,21 @@ export VISUAL=/usr/bin/nvim
 export SXHKD_SHELL="/bin/dash"
 export STEAM_RUNTIME=1
 export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ${_JAVA_OPTIONS}"
 export WM=LG3D
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
 export LESSHISTFILE="-"
 export WGETRC="$HOME/.config/wget/wgetrc"
 export INPUTRC="$HOME/.config/inputrc"
-export TERMINFO="$HOME/.local/share/terminfo"
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
-export CCACHE_CONFIGPATH="$HOME/.config/ccache.config"
-export CCACHE_DIR="$HOME/.cache/ccache"
-export GPG_TTY=$(tty)
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+export ANDROID_SDK_HOME="$HOME/.config/android"
+export CARGO_HOME="$HOME/.local/share/cargo"
+export GOPATH="$HOME/.local/share/go"
+export WINEPREFIX="$HOME/.local/share/wineprefixes/default"
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_MUSIC_DIR="$HOME/Music"
 

@@ -2,10 +2,6 @@ HISTFILE=~/.cache/zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
 
-# Setup for gpg-agent workaround
-GPG_TTY=$(tty)
-export GPG_TTY
-
 # Options section
 setopt correct           # Auto correct mistakes
 setopt extendedglob      # Extended globbing. Allows using regular expressions with *
@@ -65,9 +61,19 @@ zstyle ':vcs_info:*' enable git
 # Plugins
 source $ZDOTDIR/plugins/zsh-histdb/sqlite-history.zsh
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd histdb-update-outcome
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#928374"
+## histdb integration with autosuggestions
+_zsh_autosuggest_strategy_histdb_top() {
+    local query="select commands.argv from
+history left join commands on history.command_id = commands.rowid
+left join places on history.place_id = places.rowid
+where commands.argv LIKE '$(sql_escape $1)%'
+group by commands.argv
+order by places.dir != '$(sql_escape $PWD)', count(*) desc limit 1"
+    suggestion=$(_histdb_query "$query")
+}
+ZSH_AUTOSUGGEST_STRATEGY=histdb_top
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
 source $ZDOTDIR/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 zmodload zsh/terminfo

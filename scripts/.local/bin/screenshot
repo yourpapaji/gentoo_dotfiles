@@ -1,7 +1,7 @@
 #!/usr/bin/env dash
 # vim: ft=sh
 
-maim --hidecursor --quality 1 --delay=1 --quiet ~/Pictures/screenshots/$(date +%F-%T)_maim.png
+maim --hidecursor --quality 1 --delay=1 --quiet /media/k4rm4n/MEDIA/k4rm4n/Pictures/screenshots/$(date +%F-%T)_maim.png
 
 dunstify -a "screenshot-dwm" -u low -i camera-photo -r "989898" \
     "Lookin' good!" "Screenshot Taken, Screenshot Saved!"

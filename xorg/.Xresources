@@ -31,15 +31,17 @@
 ! Sxiv settings
 Sxiv.background: #1d2021
 Sxiv.foreground: #458588
-Sxiv.font: xos4 Terminess Powerline-9;
+Sxiv.font: Terminus(TTF)-9;
 
 ! st settings
 st.font:		JetBrains Mono-10
-st.borderpx:		8
+st.borderpx:		2
 st.termname:		st-256color
 st.cwscale:		0.9
 st.chscale:		0.9
-st.alpha:		0.94
+st.alpha:		1.0
+st.cols:		100
+st.rows:		40
 
 ! Xft settings
 Xft.dpi: 96
@@ -49,3 +51,7 @@ Xft.rgba: rgb
 Xft.autohint: 0
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
+
+! cursor
+Xcursor.size: 18
+Xcursor.theme: Neutral

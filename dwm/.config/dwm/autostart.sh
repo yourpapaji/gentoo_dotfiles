@@ -7,13 +7,12 @@ run() {
   fi
 }
 
-run /usr/libexec/geoclue-2.0/demos/agent
-#run /usr/libexec/polkit-gnome-authentication-agent-1
-#run aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
+run pcmanfm-qt --daemon-mode
 run redshift
 run clipmenud
 run unclutter --timeout 2
 run fehbg-random
 run picom --dbus --daemon --config $XDG_CONFIG_HOME/picom.conf
+run gamemoded -d
+run mpd
 run dwm-status2d
-#run pcmanfm-qt --desktop-off --daemon-mode

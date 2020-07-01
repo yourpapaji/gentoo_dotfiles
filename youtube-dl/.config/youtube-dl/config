@@ -3,6 +3,7 @@
 --prefer-ffmpeg
 --audio-quality 0
 --geo-bypass
+#--external-downloader axel --external-downloader-args "-n 10 -a"
 
 # Save in ~/Videos
 #-o ~/Videos/'00 New Fav Stuff'/%(title)s.%(ext)s

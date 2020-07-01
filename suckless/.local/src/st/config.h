@@ -9,6 +9,7 @@ static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
 	"Noto Color Emoji:pixelsize=12:antialias=true:autohint=false",
+	"IPAPGothic:pixelsize=12:antialias=true:autohint=false",
 	"Hack Nerd Font:pixelsize=12:antialias=true:autohint=true",
 };
 
@@ -68,7 +69,7 @@ static uint su_timeout = 200;
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
  * attribute.
  */
-static unsigned int blinktimeout = 400;
+static unsigned int blinktimeout = 500;
 
 /*
  * thickness of underline and bar cursors

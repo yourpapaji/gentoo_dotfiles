@@ -18,4 +18,7 @@ static const char * message = "Locked";
 static const char * text_color = "#ebdbb2";
 
 /* text size (must be a valid size) */
+/*
 static const char * font_name = "9x15";
+*/
+static const char * font_name = "fixed";

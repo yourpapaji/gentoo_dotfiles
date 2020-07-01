@@ -13,5 +13,5 @@ fi
 [ -r $HOME/.xprofile ] && . $HOME/.xprofile
 
 # session
-#exec dbus-launch --exit-with-session startdwm
+XKB_DEFAULT_LAYOUT=us
 exec dbus-launch --exit-with-session startlxqt

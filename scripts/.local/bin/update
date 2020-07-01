@@ -1,0 +1,21 @@
+#!/usr/bin/env dash
+
+set -e
+
+# sync portage tree(eix-sync is recommended)
+eix-sync
+# upgrade whole system
+emerge -avuDN --with-bdeps y --keep-going @world
+# make configuration file(s) up to date
+etc-update
+# fix static library
+#lafilefixer --justfixit | grep -v skipping
+# uninstall useless packages
+emerge -av --depclean
+# Reverse dynamic library Dependency
+#revdep-rebuild
+# clean source code of the old packages
+eclean -d distfiles
+# cache for fast emerge
+emaint sync --allrepos
+( ulimit -n 4096 && emerge --regen )
