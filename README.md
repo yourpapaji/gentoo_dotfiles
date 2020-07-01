@@ -47,16 +47,12 @@ karman's configs
 + nerd-fonts
 + networkmanager-dmenu
 + neovim (with [vim-plug](https://github.com/junegunn/vim-plug))
-+ jack2 (for music production)
-+ cadence
 + ranger
 + ueberzug
 + [j4-dmenu-desktop](https://github.com/enkore/j4-dmenu-desktop)
 + irssi
-+ opendoas (replacement for sudo)
-+ pcmanfm
-+ qt5ct
++ pcmanfm-qt
 
 uses [stow](https://www.gnu.org/software/stow/) for managing dotfiles.
 
-> usage: `stow asla zsh dwm mpd (etc)`
+> usage: `stow zsh dwm mpd (etc)`
