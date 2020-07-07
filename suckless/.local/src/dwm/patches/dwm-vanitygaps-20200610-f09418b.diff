@@ -1,13 +1,12 @@
-From 20967685d6879bd611a856ade154df19da9ddc7b Mon Sep 17 00:00:00 2001
-From: Stein Gunnar Bakkeby <bakkeby@gmail.com>
-Date: Wed, 8 May 2019 08:07:14 +0200
-Subject: [PATCH] Vanity gaps - allows control of both inner and outer gaps
- between windows and screen edge
+From c35fd03ec002e1f4476a75203ff9b5cbcc630177 Mon Sep 17 00:00:00 2001
+From: Michel Boaventura <michel.boaventura@protonmail.com>
+Date: Wed, 10 Jun 2020 10:46:51 -0300
+Subject: [PATCH] Update Vanity Gaps to master
 
 ---
- config.def.h |  21 +++++++++
- dwm.c        | 150 +++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 161 insertions(+), 10 deletions(-)
+ config.def.h |  21 +++++++
+ dwm.c        | 154 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 163 insertions(+), 12 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
 index 1c0b587..0927c2d 100644
@@ -49,7 +48,7 @@ index 1c0b587..0927c2d 100644
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 diff --git a/dwm.c b/dwm.c
-index 4465af1..88f3e04 100644
+index 9fd0286..50dbbaf 100644
 --- a/dwm.c
 +++ b/dwm.c
 @@ -119,6 +119,10 @@ struct Monitor {
@@ -63,7 +62,7 @@ index 4465af1..88f3e04 100644
  	unsigned int seltags;
  	unsigned int sellt;
  	unsigned int tagset[2];
-@@ -199,6 +203,16 @@ static void sendmon(Client *c, Monitor *m);
+@@ -200,6 +204,16 @@ static void sendmon(Client *c, Monitor *m);
  static void setclientstate(Client *c, long state);
  static void setfocus(Client *c);
  static void setfullscreen(Client *c, int fullscreen);
@@ -80,7 +79,7 @@ index 4465af1..88f3e04 100644
  static void setlayout(const Arg *arg);
  static void setmfact(const Arg *arg);
  static void setup(void);
-@@ -240,6 +254,7 @@ static char stext[256];
+@@ -241,6 +255,7 @@ static char stext[256];
  static int screen;
  static int sw, sh;           /* X display screen geometry width, height */
  static int bh, blw = 0;      /* bar geometry */
@@ -88,7 +87,7 @@ index 4465af1..88f3e04 100644
  static int lrpad;            /* sum of left and right padding for text */
  static int (*xerrorxlib)(Display *, XErrorEvent *);
  static unsigned int numlockmask = 0;
-@@ -638,6 +653,10 @@ createmon(void)
+@@ -639,6 +654,10 @@ createmon(void)
  	m->nmaster = nmaster;
  	m->showbar = showbar;
  	m->topbar = topbar;
@@ -100,9 +99,10 @@ index 4465af1..88f3e04 100644
  	m->lt[1] = &layouts[1 % LENGTH(layouts)];
  	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 @@ -1498,6 +1517,111 @@ setfullscreen(Client *c, int fullscreen)
+ 	}
  }
- 
- void
+
++void
 +setgaps(int oh, int ov, int ih, int iv)
 +{
 +	if (oh < 0) oh = 0;
@@ -207,22 +207,21 @@ index 4465af1..88f3e04 100644
 +	);
 +}
 +
-+void
+ void
  setlayout(const Arg *arg)
  {
- 	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1673,26 +1797,32 @@ tagmon(const Arg *arg)
+@@ -1674,28 +1798,34 @@ tagmon(const Arg *arg)
  void
  tile(Monitor *m)
  {
 -	unsigned int i, n, h, mw, my, ty;
 +	unsigned int i, n, h, r, oe = enablegaps, ie = enablegaps, mw, my, ty;
  	Client *c;
- 
+
  	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
  	if (n == 0)
  		return;
- 
+
 +	if (smartgaps == n) {
 +		oe = 0; // outer gaps disabled
 +	}
@@ -238,22 +237,26 @@ index 4465af1..88f3e04 100644
  		if (i < m->nmaster) {
 -			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
 -			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
--			my += HEIGHT(c);
+-			if (my + HEIGHT(c) < m->wh)
+-				my += HEIGHT(c);
 +			r = MIN(n, m->nmaster) - i;
 +			h = (m->wh - my - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
 +			resize(c, m->wx + m->gappov*oe, m->wy + my, mw - (2*c->bw) - m->gappiv*ie, h - (2*c->bw), 0);
++			if (my + HEIGHT(c) + m->gappih*ie < m->wh)
 +			my += HEIGHT(c) + m->gappih*ie;
  		} else {
 -			h = (m->wh - ty) / (n - i);
 -			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
--			ty += HEIGHT(c);
+-			if (ty + HEIGHT(c) < m->wh)
+-				ty += HEIGHT(c);
 +			r = n - i;
 +			h = (m->wh - ty - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
 +			resize(c, m->wx + mw + m->gappov*oe, m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->gappov*oe, h - (2*c->bw), 0);
-+			ty += HEIGHT(c) + m->gappih*ie;
++			if (ty + HEIGHT(c) + m->gappih*ie < m->wh)
++				ty += HEIGHT(c) + m->gappih*ie;
  		}
  }
- 
--- 
-2.7.4
+
+--
+2.27.0
 

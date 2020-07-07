@@ -51,6 +51,7 @@ install: all
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
+		${DESTDIR}${MANPREFIX}/man1/dwm.1
 		${DESTDIR}${PREFIX}/bin/startdwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1\
 		/usr/share/xsessions/dwm.desktop

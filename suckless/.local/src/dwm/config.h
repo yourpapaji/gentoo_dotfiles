@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 8;        /* snap pixel */
+static const unsigned int snap      = 16;       /* snap pixel */
 static const unsigned int gappih    = 4;        /* horiz inner gap between windows */
 static const unsigned int gappiv    = 4;        /* vert inner gap between windows */
 static const unsigned int gappoh    = 8;        /* horiz outer gap between windows and screen edge */
@@ -29,39 +29,38 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "1:", "2:", "3:", "4:", "5:", "6:", "7:", "8:", "9:" };
 
 static const Rule rules[] = {
-	/* class                        instance  title     tags mask   iscentered isfloating monitor */
-	{ NULL,                         NULL,     NULL,     0,          1,         0,         -1 },
-	{ "Gimp",                       NULL,     NULL,     1 << 6,     1,         1,         -1 },
-	{ "mpv",                        NULL,     NULL,     0,          1,         1,         -1 },
-	{ "pcmanfm-qt",                 NULL,     NULL,     0,          1,         1,         -1 },
-	{ "lxqt-config",                NULL,     NULL,     0,          1,         1,         -1 },
-	{ "lxqt-openssh-askpass",       NULL,     NULL,     0,          1,         1,         -1 },
-	{ "pavucontrol-qt",             NULL,     NULL,     0,          1,         1,         -1 },
-	{ "Sxiv",                       NULL,     NULL,     0,          1,         1,         -1 },
-	{ "obs",                        NULL,     NULL,     0,          1,         1,         -1 },
-	{ "Zathura",                    NULL,     NULL,     0,          1,         1,         -1 },
-	{ "libreoffice-startcenter",    NULL,     NULL,     1 << 6,     1,         1,         -1 },
-	{ "Meld",                       NULL,     NULL,     0,          1,         1,         -1 },
-	{ "Filezilla",                  NULL,     NULL,     1 << 7,     1,         1,         -1 },
-	{ "qBittorrent",                NULL,     NULL,     1 << 7,     1,         1,         -1 },
-	{ "discord",                    NULL,     NULL,     1 << 3,     1,         1,         -1 },
-	{ "Lutris",                     NULL,     NULL,     1 << 4,     1,         1,         -1 },
-	{ "Steam",                      NULL,     NULL,     1 << 4,     1,         1,         -1 },
-	{ "steam_app_306130",           NULL,     NULL,     1 << 4,     1,         1,         -1 },
-	{ "bethesda.net_launcher.exe",  NULL,     NULL,     1 << 4,     1,         1,         -1 },
-	{ "steam_app_306130",           NULL,     "Launcher",1 << 4,    1,         1,         -1 },
-	{ "bethesda.net_launcher.exe",  NULL,     "Launcher",1 << 4,    1,         1,         -1 },
-	{ "pavucontrol-qt",             NULL,     NULL,     0,          1,         1,         -1 },
-	{ "Nvidia-settings",            NULL,     NULL,     0,          1,         1,         -1 },
-	{ "Virt-manager",               NULL,     NULL,     1 << 6,     1,         1,         -1 },
-	{ "St",                         NULL,     "float",  0,          1,         1,         -1 },
+	/* class                        instance  title     tags mask   isfloating monitor */
+	{ NULL,                         NULL,     NULL,     0,          0,         -1 },
+	{ "Gimp",                       NULL,     NULL,     1 << 6,     1,         -1 },
+	{ "mpv",                        NULL,     NULL,     0,          1,         -1 },
+	{ "pcmanfm-qt",                 NULL,     NULL,     0,          1,         -1 },
+	{ "lxqt-config",                NULL,     NULL,     0,          1,         -1 },
+	{ "lxqt-openssh-askpass",       NULL,     NULL,     0,          1,         -1 },
+	{ "pavucontrol-qt",             NULL,     NULL,     0,          1,         -1 },
+	{ "Sxiv",                       NULL,     NULL,     0,          1,         -1 },
+	{ "obs",                        NULL,     NULL,     0,          1,         -1 },
+	{ "Zathura",                    NULL,     NULL,     0,          1,         -1 },
+	{ "libreoffice-startcenter",    NULL,     NULL,     1 << 6,     1,         -1 },
+	{ "Meld",                       NULL,     NULL,     0,          1,         -1 },
+	{ "Filezilla",                  NULL,     NULL,     1 << 7,     1,         -1 },
+	{ "qBittorrent",                NULL,     NULL,     1 << 7,     1,         -1 },
+	{ "discord",                    NULL,     NULL,     1 << 3,     1,         -1 },
+	{ "Lutris",                     NULL,     NULL,     1 << 4,     1,         -1 },
+	{ "Steam",                      NULL,     NULL,     1 << 4,     1,         -1 },
+	{ "steam_app_306130",           NULL,     NULL,     1 << 4,     1,         -1 },
+	{ "bethesda.net_launcher.exe",  NULL,     NULL,     1 << 4,     1,         -1 },
+	{ "steam_app_306130",           NULL,     "Launcher",1 << 4,    1,         -1 },
+	{ "bethesda.net_launcher.exe",  NULL,     "Launcher",1 << 4,    1,         -1 },
+	{ "pavucontrol-qt",             NULL,     NULL,     0,          1,         -1 },
+	{ "Nvidia-settings",            NULL,     NULL,     0,          1,         -1 },
+	{ "Virt-manager",               NULL,     NULL,     1 << 6,     1,         -1 },
+	{ "St",                         NULL,     "float",  0,          1,         -1 },
 };
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
-static const int decorhints  = 1;    /* 1 means respect decoration hints */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -80,7 +79,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/dash", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -90,8 +89,6 @@ static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 #include "movestack.c"
-#include "selfrestart.c"
-
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ ALTKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -144,7 +141,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 

@@ -163,7 +163,7 @@
     icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 16
+    max_icon_size = 64
 
     # Paths to default icons.
     #icon_path = /usr/share/icons/breeze-dark/status/16:/usr/share/icons/breeze-dark/devices/16/

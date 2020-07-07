@@ -15,6 +15,10 @@ scripts/.local/bin/ueberzug
 scripts/.local/bin/protonvpn
 scripts/.local/bin/yapf
 scripts/.local/bin/tor-prompt
+scripts/.local/bin/stack
+scripts/.local/bin/xmobar
+scripts/.local/bin/xmonad
+scripts/.local/bin/dwm
 zsh/.config/zsh/plugins/*
 zsh/.config/zsh/.zcalc_history
 zsh/.config/zsh/.zcompdump

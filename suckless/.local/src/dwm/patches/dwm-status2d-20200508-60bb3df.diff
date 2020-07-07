@@ -1,8 +1,19 @@
+From 60bb3dfaf91227eb02e828d74e6f4758b2c56542 Mon Sep 17 00:00:00 2001
+From: cultab <rroarck@gmail.com>
+Date: Fri, 8 May 2020 13:56:08 +0300
+Subject: [PATCH] fix status2d to work after ed3ab6
+
+ed3ab6 changed the name of the variable sw to tw, now the patch won't apply nor work.
+This patch updates the variable name to the new one.
+---
+ dwm.c | 120 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 114 insertions(+), 6 deletions(-)
+
 diff --git a/dwm.c b/dwm.c
-index d27cb67..464c9d6 100644
+index 9fd0286..71e18be 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -163,6 +163,7 @@ static void detach(Client *c);
+@@ -163,6 +163,7 @@ static void detachstack(Client *c);
  static Monitor *dirtomon(int dir);
  static void drawbar(Monitor *m);
  static void drawbars(void);
@@ -19,7 +30,7 @@ index d27cb67..464c9d6 100644
  static int screen;
  static int sw, sh;           /* X display screen geometry width, height */
  static int bh, blw = 0;      /* bar geometry */
-@@ -483,7 +484,7 @@ cleanup(void)
+@@ -485,7 +486,7 @@ cleanup(void)
  		cleanupmon(mons);
  	for (i = 0; i < CurLast; i++)
  		drw_cur_free(drw, cursor[i]);
@@ -28,7 +39,7 @@ index d27cb67..464c9d6 100644
  		free(scheme[i]);
  	XDestroyWindow(dpy, wmcheckwin);
  	drw_free(drw);
-@@ -690,6 +691,106 @@ dirtomon(int dir)
+@@ -693,6 +694,114 @@ dirtomon(int dir)
  	return m;
  }
  
@@ -75,6 +86,7 @@ index d27cb67..464c9d6 100644
 +
 +	drw_setscheme(drw, scheme[LENGTH(colors)]);
 +	drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
++	drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
 +	drw_rect(drw, x, 0, w, bh, 1, 1);
 +	x++;
 +
@@ -98,8 +110,15 @@ index d27cb67..464c9d6 100644
 +					buf[7] = '\0';
 +					drw_clr_create(drw, &drw->scheme[ColFg], buf);
 +					i += 7;
++				} else if (text[i] == 'b') {
++					char buf[8];
++					memcpy(buf, (char*)text+i+1, 7);
++					buf[7] = '\0';
++					drw_clr_create(drw, &drw->scheme[ColBg], buf);
++					i += 7;
 +				} else if (text[i] == 'd') {
 +					drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
++					drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
 +				} else if (text[i] == 'r') {
 +					int rx = atoi(text + ++i);
 +					while (text[++i] != ',');
@@ -135,18 +154,18 @@ index d27cb67..464c9d6 100644
  void
  drawbar(Monitor *m)
  {
-@@ -701,9 +802,7 @@ drawbar(Monitor *m)
+@@ -704,9 +813,7 @@ drawbar(Monitor *m)
  
  	/* draw status first so it can be overdrawn by tags later */
  	if (m == selmon) { /* status is only drawn on selected monitor */
 -		drw_setscheme(drw, scheme[SchemeNorm]);
--		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
--		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-+		sw = m->ww - drawstatusbar(m, bh, stext);
+-		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
++		tw = m->ww - drawstatusbar(m, bh, stext);
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -1572,7 +1671,8 @@ setup(void)
+@@ -1568,7 +1675,8 @@ setup(void)
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
  	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
  	/* init appearance */
@@ -156,3 +175,6 @@ index d27cb67..464c9d6 100644
  	for (i = 0; i < LENGTH(colors); i++)
  		scheme[i] = drw_scm_create(drw, colors[i], 3);
  	/* init bars */
+-- 
+2.26.2
+

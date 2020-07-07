@@ -14,4 +14,4 @@ fi
 
 # session
 XKB_DEFAULT_LAYOUT=us
-exec dbus-launch --exit-with-session startlxqt
+exec dbus-launch --sh-syntax --exit-with-x11 startlxqt

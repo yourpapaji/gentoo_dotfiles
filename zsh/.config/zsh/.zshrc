@@ -35,6 +35,7 @@ alias la='exa -al --color=always --group-directories-first --git'
 alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
 alias portail='sudo tail -f /var/log/emerge-fetch.log'
+alias xcompile='stack exec -- xmonad --recompile'
 
 # Completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
