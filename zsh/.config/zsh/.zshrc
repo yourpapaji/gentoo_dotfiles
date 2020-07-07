@@ -82,6 +82,7 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+source $ZDOTDIR/plugins/zsh-sudo/sudo.plugin.zsh
 plugin_update() {
 	find $ZDOTDIR/plugins -maxdepth 3 -name .git -type d | rev | cut -c 6- | rev | xargs -I {} git -C {} pull
 }
