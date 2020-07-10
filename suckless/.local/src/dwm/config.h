@@ -55,6 +55,7 @@ static const Rule rules[] = {
 	{ "Nvidia-settings",            NULL,     NULL,     0,          1,         -1 },
 	{ "Virt-manager",               NULL,     NULL,     1 << 6,     1,         -1 },
 	{ "St",                         NULL,     "float",  0,          1,         -1 },
+	{ "Brave-browser",              NULL,     NULL,     1 << 8,     0,         -1 },
 };
 
 /* layout(s) */
@@ -126,6 +127,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },

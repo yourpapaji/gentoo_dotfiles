@@ -8,8 +8,13 @@
 static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
-	"Noto Color Emoji:pixelsize=12:antialias=true:autohint=false",
-	"IPAPGothic:pixelsize=12:antialias=true:autohint=false",
+	"Noto Sans CJK HK:pixelsize=12:antialias=true:autohint=true",
+	"Noto Sans CJK JP:pixelsize=12:antialias=true:autohint=true",
+	"Noto Sans CJK SC:pixelsize=12:antialias=true:autohint=true",
+	"Noto Sans CJK KR:pixelsize=12:antialias=true:autohint=true",
+	"Noto Sans CJK TC:pixelsize=12:antialias=true:autohint=true",
+	"Noto Sans:pixelsize=12:antialias=true:autohint=true",
+	"Noto Color Emoji:pixelsize=12:antialias=true:autohint=true",
 	"Hack Nerd Font:pixelsize=12:antialias=true:autohint=true",
 };
 
