@@ -35,13 +35,21 @@ Sxiv.font: Terminus(TTF)-9;
 
 ! st settings
 st.font:		JetBrains Mono-10
-st.borderpx:		2
+st.borderpx:		8
 st.termname:		st-256color
 st.cwscale:		0.9
 st.chscale:		0.9
 st.alpha:		1.0
 st.cols:		100
 st.rows:		40
+
+! xmenu
+xmenu.font:		JetBrains Mono-9
+xmenu.borderWidth:	1
+xmenu.selbackground:	#b8bb26
+xmenu.selforeground:	#1d2021
+xmenu.gap:		8
+xmenu.height:		22
 
 ! Xft settings
 Xft.dpi: 96

@@ -6,6 +6,15 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
     done
 fi
 
+# Ensure dbus is either already running, or safely start it
+if [[ -z "${DBUS_SESSION_BUS_ADDRESS}" ]];
+then
+    eval $(dbus-launch --sh-syntax --exit-with-session)
+fi
+
+# Make the keyring daemon ready to communicate with nm-applet
+export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+
 # user init scripts and settings
 [ -r /etc/X11/xinit/.Xmodmap ] && xmodmap /etc/X11/xinit/.Xmodmap
 [ -r $HOME/.Xmodmap ] && xmodmap $HOME/.Xmodmap
@@ -13,5 +22,5 @@ fi
 [ -r $HOME/.xprofile ] && . $HOME/.xprofile
 
 # session
-XKB_DEFAULT_LAYOUT=us
-exec dbus-launch --sh-syntax --exit-with-x11 startlxqt
+#exec dbus-launch --sh-syntax --exit-with-session startlxqt
+exec startlxqt

@@ -44,11 +44,12 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_MUSIC_DIR="$HOME/Music"
 
 # gnome keyring
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
-export SSH_AUTH_SOCK
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+#export SSH_AUTH_SOCK
 
 # x settings
 setxkbmap -layout us &
 xsetroot -cursor_name left_ptr &
+xclickroot -3 xmenu.sh &
 xautolock -time 10 -locker slock_time &
 sxhkd &

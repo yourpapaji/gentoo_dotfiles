@@ -28,9 +28,6 @@ set wildmode=longest,list,full
 " Enable highlighting of the current line
 set cursorline
 
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
 set nobackup
 set nowritebackup
 set noswapfile
@@ -73,13 +70,15 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Completions
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ycm-core/YouCompleteMe'
 Plug 'sheerun/vim-polyglot'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
 " quote and bracket completion
 Plug 'jiangmiao/auto-pairs'
 " Track the engine.
-"Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 
 " syntax check
 Plug 'dense-analysis/ale'
@@ -148,6 +147,21 @@ let g:lightline.tabline = {
 			\   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok', 'gitbranch' ] ]
 			\ }
 set guioptions-=e  " Don't use GUI tabline
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" jedi-vim
+" disable autocompletion, cause we use deoplete for completion
+let g:jedi#completions_enabled = 0
+" open the go-to function in split, not another buffer
+let g:jedi#use_splits_not_buffers = "right"
+
+" YouCompleteMe
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_auto_trigger = 1
 
 " NERDTree
 let NERDTreeMinimalUI = 1

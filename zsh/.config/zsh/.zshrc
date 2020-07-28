@@ -21,8 +21,8 @@ bindkey '^[[1;5D' backward-word     #
 bindkey '^[[1;5C' forward-word      #
 bindkey '^H' backward-kill-word     # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo                 # Shift+tab undo last action
-WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
-MOTION_WORDCHARS='~!#$%^&*(){}[]<>?.+;-/'
+WORDCHARS='~!#$%^&*(){}[]<>?+;-'
+MOTION_WORDCHARS='~!#$%^&*(){}[]<>?+;-/'
 
 # aliases
 alias q='exit'
@@ -35,7 +35,6 @@ alias la='exa -al --color=always --group-directories-first --git'
 alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias vimrc='nvim $XDG_CONFIG_HOME/nvim/init.vim'
 alias portail='sudo tail -f /var/log/emerge-fetch.log'
-alias xcompile='stack exec -- xmonad --recompile'
 
 # Completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
