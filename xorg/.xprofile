@@ -37,7 +37,7 @@ export ANDROID_SDK_HOME="$HOME/.config/android"
 export CARGO_HOME="$HOME/.local/share/cargo"
 export GOPATH="$HOME/.local/share/go"
 export WINEPREFIX="$HOME/.local/share/wineprefixes/default"
-
+e
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -46,6 +46,5 @@ export XDG_MUSIC_DIR="$HOME/Music"
 # x settings
 setxkbmap -layout us &
 xsetroot -cursor_name left_ptr &
-xclickroot -3 xmenu.sh &
 xautolock -time 10 -locker slock_time &
 sxhkd &
