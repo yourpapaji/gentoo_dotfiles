@@ -10,9 +10,9 @@ set shell=/bin/sh
 set mouse=a
 set undofile
 set undodir=~/.cache/nvim/undo
-set sb
-set spr
-set visualbell
+"set sb
+"set spr
+"set visualbell
 
 " make vim faster
 set lazyredraw
@@ -22,8 +22,9 @@ set synmaxcol=180
 let mapleader = ";"
 
 " Show linenumbers
-set number
-set ruler
+"set number
+"set ruler
+set relativenumber
 set wildmode=longest,list,full
 " Enable highlighting of the current line
 set cursorline
@@ -66,38 +67,8 @@ set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
 set hidden
 set shortmess=aFc
 
-call plug#begin('~/.config/nvim/plugged')
-
-" Plugin outside ~/.vim/plugged with post-update hook
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-" Completions
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
-Plug 'davidhalter/jedi-vim'
-" quote and bracket completion
-Plug 'jiangmiao/auto-pairs'
-" Track the engine.
-"Plug 'SirVer/ultisnips'
-
-" syntax check
-Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
-
-" Formater
-Plug 'sbdchd/neoformat'
-
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
-Plug 'morhetz/gruvbox'
-Plug 'lilydjwg/colorizer'
-Plug 'itchyny/lightline.vim'
-
-" Initialize plugin system
-call plug#end()
+" plugins
+source $HOME/.config/nvim/plugconfigs/vimplug.vim
 
 " Theme and Styling
 set background=dark
@@ -112,74 +83,12 @@ let g:gruvbox_italicize_comments=1
 let g:gruvbox_italicize_strings=0
 colorscheme gruvbox
 
-" Lightline
-let g:lightline = {
-			\   'colorscheme': 'gruvbox',
-			\   'active': {
-			\     'left':[ [ 'mode', 'paste' ],
-			\              [ 'readonly', 'filename', 'modified' ]
-			\     ]
-			\   },
-			\   'component': {
-			\     'lineinfo': ' %3l:%-2v',
-			\   },
-			\   'component_function': {
-			\     'gitbranch': 'fugitive#head',
-			\   }
-			\ }
-let g:lightline.component_expand = {
-			\  'linter_checking': 'lightline#ale#checking',
-			\  'linter_warnings': 'lightline#ale#warnings',
-			\  'linter_errors': 'lightline#ale#errors',
-			\  'linter_ok': 'lightline#ale#ok',
-			\ }
-let g:lightline.component_type = {
-			\     'linter_checking': 'left',
-			\     'linter_warnings': 'warning',
-			\     'linter_errors': 'error',
-			\     'linter_ok': 'left',
-			\ }
-let g:lightline#ale#indicator_checking = "\uf110 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c "
-let g:lightline.tabline = {
-			\   'left': [ ['tabs'] ],
-			\   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok', 'gitbranch' ] ]
-			\ }
-set guioptions-=e  " Don't use GUI tabline
+" python
+let g:python_host_prog  = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
 
-" NERDTree
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeQuitOnOpen = 1
-let NERDTreeShowHidden=1
-map <C-n> :NERDTreeToggle<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-
-"Window Navigation
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
-nnoremap <leader>H <C-w>H
-nnoremap <leader>J <C-w>J
-nnoremap <leader>K <C-w>K
-nnoremap <leader>L <C-w>L
-nnoremap <C-H> :vertical resize -5<CR>
-nnoremap <C-J> :resize +5<CR>
-nnoremap <C-K> :resize -5<CR>
-nnoremap <C-L> :vertical resize +5<CR>
-autocmd VimResized * wincmd =
-
-"Tab Navigation
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-nnoremap td  :tabclose<CR>
-nnoremap tn :tabnew<CR>
+" config sources
+source $HOME/.config/nvim/plugconfigs/coc.vim
+source $HOME/.config/nvim/plugconfigs/lightline.vim
+source $HOME/.config/nvim/plugconfigs/nerdtree.vim
+source $HOME/.config/nvim/keybinds.vim

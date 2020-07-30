@@ -22,5 +22,4 @@ export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
 [ -r $HOME/.xprofile ] && . $HOME/.xprofile
 
 # session
-#exec dbus-launch --sh-syntax --exit-with-session startlxqt
 exec startlxqt
