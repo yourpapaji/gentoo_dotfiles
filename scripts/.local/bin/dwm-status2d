@@ -76,7 +76,7 @@ while true; do
     LOCALTIME=$(date +%a\ %d\ %b\ %H:%M)
 
     # CPU
-    CPU_T=$(cat /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input)
+    CPU_T=$(cat /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input)
     CPU_TEMP=$(expr "$CPU_T" / 1000)
     CPU_F=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
     CPU_FREQ=$(expr "$CPU_F" / 1000)
@@ -92,10 +92,10 @@ while true; do
     MEMTOT=$(free -h |awk '(NR == 2) {print $2}')
 
     # Used and total storage in / and /home (rounded to 1024B)
-    ROOTUSED=$(df -h | grep '/$' | awk '{print $3}')
-    ROOTTOT=$(df -h | grep '/$' | awk '{print $2}')
-    HOMEUSED=$(df -h | grep '/home$' | awk '{print $3}')
-    HOMETOT=$(df -h | grep '/home$' | awk '{print $2}')
+    ROOTUSED=$(df -h | grep '/$' | awk '{print $3}' | tr "\\n" " ")
+    ROOTTOT=$(df -h | grep '/$' | awk '{print $2}' | tr "\\n" " ")
+    HOMEUSED=$(df -h | grep '/home$' | awk '{print $3}' | tr "\\n" " ")
+    HOMETOT=$(df -h | grep '/home$' | awk '{print $2}' | tr "\\n" " ")
 
     # STATUS
     xsetroot -name " ^c#b8bb26^▼ ${rxs}KiB/s ▲ ${txs}KiB/s^d^ $(network) ^c#928374^|^d^ $(pulseaudio) ^c#928374^|^d^ $WEATHER ^c#928374^|^d^ : ${HOMEUSED}/${HOMETOT} ^c#928374^|^d^ /: ${ROOTUSED}/${ROOTTOT} ^c#928374^|^d^ RAM ${MEMUSED}/${MEMTOT} ^c#928374^|^d^ ^c#b8bb26^GPU ${GPU_TEMP}°C^d^ ^c#928374^|^d^ ^c#fabd2f^ ${CPU_FREQ}Mhz ${CPU_TEMP}°C^d^ ^c#928374^|^d^ $(ups) ^c#928374^|^d^ $LOCALTIME "

@@ -13,6 +13,7 @@ set undodir=~/.cache/nvim/undo
 "set sb
 "set spr
 "set visualbell
+set ai
 
 " make vim faster
 set lazyredraw
@@ -22,9 +23,9 @@ set synmaxcol=180
 let mapleader = ";"
 
 " Show linenumbers
-"set number
-"set ruler
-set relativenumber
+set number
+set ruler
+"set relativenumber
 set wildmode=longest,list,full
 " Enable highlighting of the current line
 set cursorline

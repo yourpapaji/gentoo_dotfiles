@@ -166,7 +166,6 @@
     max_icon_size = 64
 
     # Paths to default icons.
-    #icon_path = /usr/share/icons/breeze-dark/status/16:/usr/share/icons/breeze-dark/devices/16/
     icon_path = /usr/share/icons/Flat-Remix-Blue-Dark/status/scalable/16/:/usr/share/icons/Flat-Remix-Blue-Dark/devices/scalable/
 
     ### History ###
@@ -184,7 +183,7 @@
     dmenu = /usr/local/bin/dmenu -p dunst:
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/chromium
+    browser = /usr/bin/brave-bin
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
@@ -207,8 +206,7 @@
     #  mesg: Important Messages
     #  info: all unimportant stuff
     # debug: all less than unimportant stuff
-    #verbosity = mesg
-    verbosity = debug
+    verbosity = mesg
 
     # Define the corner radius of the notification window
     # in pixel size. If the radius is 0, you have no rounded
